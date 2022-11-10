@@ -5,6 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="24dp"
+   android:layout_marginTop="13dp"
+    android:layout_marginBottom="13dp"
     android:background="#FFFFFF"
     android:paddingEnd="16dp">
 
