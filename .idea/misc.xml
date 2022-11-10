@@ -12,20 +12,26 @@
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/dot.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/filter.xml" value="0.1255" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/filter_background.xml" value="0.1" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/ic_filter_6555__1_.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/ic_global_9348.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/ic_moon.xml" value="0.1905" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/ic_sun_8726.xml" value="0.15" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/language_chooser_background.xml" value="0.1" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/languages_clear_background.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/moon_background.xml" value="0.1905" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/search_country_background.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/sun_background.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/font/axiforma.xml" value="0.11851851851851852" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/countries_list_item.xml" value="0.25" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/intro_screen.xml" value="0.4082457558609539" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/languages_layout.xml" value="0.25" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-notnight/languages.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/countries_list_item.xml" value="0.33" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/intro_screen.xml" value="0.5086071987480438" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/languages.xml" value="0.5" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/languages_layout.xml" value="0.33" />
       </map>
     </option>
   </component>
