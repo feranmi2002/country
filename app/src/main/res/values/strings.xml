@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Explore</string>
+    <string name="search_country">Search Country</string>
 </resources>
