@@ -16,8 +16,8 @@ class FilterAdapter(
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
     inner class HeaderViewHolder(val binding: FilterHeaderBinding) : BaseViewHolder(binding.root) {
-        override fun bind(item: FilterHeader) {
-            binding.title.text = item.title
+        override fun bind(item: Any) {
+            binding.title.text = (item as FilterHeader).title
         }
     }
 
@@ -34,8 +34,8 @@ class FilterAdapter(
             }
         }
 
-        override fun bind(item: FilterHeader) {
-            mItem = item
+        override fun bind(item: Any) {
+            mItem = item as FilterHeader
             binding.item.text = item.child.data.first()
             if (item.child.type == CONTINENT) checkBox.isChecked =
                 dataMapOfContinents[item.child.data.first()]!!
@@ -137,8 +137,9 @@ class FilterAdapter(
         var listOfData = dataMapOfTimeZones.toList()
         do {
             if (listOfData[index].second) countOfCheckedBoxes += 1
-            else index -=1
-        }while (countOfCheckedBoxes == 0 && index > 0)
+            else index -= 1
+        }
+        while (countOfCheckedBoxes == 0 && index > 0)
 
         if (countOfCheckedBoxes == 0) {
             listOfData = dataMapOfContinents.toList()
@@ -166,5 +167,10 @@ class FilterAdapter(
             if (it.value) timeZones.add(it.key)
         }
         return timeZones
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (filters[position].type == PARENT) R.layout.filter_header
+        else R.layout.filter_item
     }
 }

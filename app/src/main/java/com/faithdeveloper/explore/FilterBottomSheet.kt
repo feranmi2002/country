@@ -17,6 +17,7 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
     private lateinit var adapter: FilterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        createAdapter()
         super.onCreate(savedInstanceState)
     }
 
@@ -33,6 +34,7 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
         binding.recycler.adapter = adapter
         reset()
         showResults()
+        dismiss()
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -49,7 +51,7 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
         super.onDestroy()
     }
 
-    fun createAdapter() {
+    private fun createAdapter() {
         val dataMapOfContinents = mutableMapOf<String, Boolean>()
         val dataMapOfTimeZones= mutableMapOf<String, Boolean>()
         val headers = resources.getStringArray(R.array.filter_headers)
@@ -91,6 +93,13 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
         else {
             val continents = adapter.getChosenContinents()
             val timeZones = adapter.getChosenTimeZones()
+            TODO("Send to backend")
+        }
+    }
+
+    private fun close(){
+        binding.cancel.setOnClickListener {
+            dismiss()
         }
     }
 }
