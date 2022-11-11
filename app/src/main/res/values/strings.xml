@@ -6,4 +6,10 @@
     <string name="languages">Languages</string>
     <string name="reset">Reset</string>
     <string name="show_results">Show Results</string>
+    <string name="population">Population:</string>
+    <string name="Region">Region</string>
+    <string name="capital">Capital</string>
+    <string name="motto">Motto</string>
+    <string name="official_language">Official Langauge</string>
+    <string name="ethnic_group">Ethnic Group</string>
 </resources>
