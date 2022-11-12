@@ -15,5 +15,11 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.faithdeveloper.explore.DetailsFragment"
-        android:label="DetailsFragment" />
+        android:label="DetailsFragment">
+
+        <argument
+            android:name="data"
+            app:argType="com.faithdeveloper.explore.Country"/>
+    </fragment>
+
 </navigation>

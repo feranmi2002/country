@@ -57,7 +57,7 @@
                     app:layout_constraintTop_toTopOf="@id/app_logo"
                     app:srcCompat="@drawable/ic_moon" />
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/search_country"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
