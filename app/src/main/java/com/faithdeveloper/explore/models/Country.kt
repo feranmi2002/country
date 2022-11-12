@@ -1,4 +1,4 @@
-package com.faithdeveloper.explore
+package com.faithdeveloper.explore.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -15,7 +15,7 @@ data class Country(
     val independent: Boolean,
     val flags: Image,
     val timezones: List<String>,
-    val coats_of_arms: Image
+    val coatOfArms: Image
 ) : Parcelable {
     constructor() : this(
         Name(),

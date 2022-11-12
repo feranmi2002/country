@@ -1,4 +1,4 @@
-package com.faithdeveloper.explore
+package com.faithdeveloper.explore.models
 
 data class FilterChild(
                        var type: String,

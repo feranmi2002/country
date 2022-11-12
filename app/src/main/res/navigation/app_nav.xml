@@ -6,20 +6,20 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.faithdeveloper.explore.MainFragment"
-        android:label="MainFragment" >
+        android:name="com.faithdeveloper.explore.fragments.MainFragment"
+        android:label="MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.faithdeveloper.explore.DetailsFragment"
+        android:name="com.faithdeveloper.explore.fragments.DetailsFragment"
         android:label="DetailsFragment">
 
         <argument
             android:name="data"
-            app:argType="com.faithdeveloper.explore.Country"/>
+            app:argType="com.faithdeveloper.explore.models.Country" />
     </fragment>
 
 </navigation>

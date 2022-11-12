@@ -1,4 +1,4 @@
-package com.faithdeveloper.explore
+package com.faithdeveloper.explore.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.faithdeveloper.explore.Utils.CONTINENT
-import com.faithdeveloper.explore.Utils.PARENT
-import com.faithdeveloper.explore.Utils.TIME_ZONE
+import com.faithdeveloper.explore.adapters.FilterAdapter
+import com.faithdeveloper.explore.util.FilterInterface
+import com.faithdeveloper.explore.R
+import com.faithdeveloper.explore.util.Utils.CONTINENT
+import com.faithdeveloper.explore.util.Utils.PARENT
+import com.faithdeveloper.explore.util.Utils.REGION_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.TIME_ZONE
 import com.faithdeveloper.explore.databinding.FilterLayoutBinding
+import com.faithdeveloper.explore.models.FilterChild
+import com.faithdeveloper.explore.models.FilterHeader
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class FilterBottomSheet() : BottomSheetDialogFragment() {
@@ -94,11 +100,13 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
 
     private fun showResults(){
         binding.showResult.setOnClickListener {
-            if (adapter.checkAnyCheckboxHasBeenChecked() ==0) Toast.makeText(requireContext(), getString(R.string.choose_filters), Toast.LENGTH_SHORT).show()
+            if (adapter.checkAnyCheckboxHasBeenChecked() ==0) Toast.makeText(requireContext(), getString(
+                R.string.choose_filters
+            ), Toast.LENGTH_SHORT).show()
             else {
                 val continents = adapter.getChosenContinents()
-                val timeZones = adapter.getChosenTimeZones()
-                TODO("Send to backend")
+                filterInterface.filter(continents.first(), REGION_QUERY_TYPE)
+                dismiss()
             }
         }
     }
@@ -110,7 +118,7 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
     }
 
     companion object{
-        fun instance(filterInterface:FilterInterface):FilterBottomSheet{
+        fun instance(filterInterface: FilterInterface): FilterBottomSheet {
             return FilterBottomSheet().apply {
                 this.filterInterface = filterInterface
             }

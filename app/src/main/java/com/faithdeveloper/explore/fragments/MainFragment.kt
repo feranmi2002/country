@@ -1,4 +1,4 @@
-package com.faithdeveloper.explore
+package com.faithdeveloper.explore.fragments
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,24 +7,27 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.ConfigurationCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.faithdeveloper.explore.paging.ExplorePager
+import com.faithdeveloper.explore.viewmodels.ExploreViewModel
+import com.faithdeveloper.explore.util.FilterInterface
+import com.faithdeveloper.explore.R
+import com.faithdeveloper.explore.util.Utils.NAME_QUERY_TYPE
 import com.faithdeveloper.explore.databinding.IntroScreenBinding
+import com.faithdeveloper.explore.retrofit.ApiHelper
+import com.faithdeveloper.explore.retrofit.ServiceBuilder
 import kotlinx.coroutines.launch
 
 class MainFragment: Fragment(), FilterInterface {
     private  var _binding:IntroScreenBinding? = null
     private  val binding get() = _binding!!
-    private lateinit var pagerAdapter:ExplorePager
-    private lateinit var viewModel:ExploreViewModel
+    private lateinit var pagerAdapter: ExplorePager
+    private lateinit var viewModel: ExploreViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = ExploreViewModel(ApiHelper(ServiceBuilder.apiService))
@@ -71,6 +74,7 @@ class MainFragment: Fragment(), FilterInterface {
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
                         if (binding.searchCountry.text!!.isNotBlank()){
+                            viewModel.queryType = NAME_QUERY_TYPE
                             viewModel.nameQuery.value = binding.searchCountry.text.toString().trim()
                         }else{
                             Toast.makeText(requireContext(), "Enter a country", Toast.LENGTH_SHORT).show()
@@ -116,6 +120,10 @@ class MainFragment: Fragment(), FilterInterface {
         }
     }
 
+    override fun filter(filter: String, type: String) {
+        viewModel.queryType =type
+        viewModel.nameQuery.value = filter
+    }
 
     private fun setUpAdapter() {
     pagerAdapter = ExplorePager {
@@ -147,4 +155,5 @@ class MainFragment: Fragment(), FilterInterface {
             }
         }
     }
+
 }

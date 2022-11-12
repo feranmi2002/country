@@ -1,13 +1,17 @@
-package com.faithdeveloper.explore
+package com.faithdeveloper.explore.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.faithdeveloper.explore.Utils.CHILD
-import com.faithdeveloper.explore.Utils.CONTINENT
-import com.faithdeveloper.explore.Utils.PARENT
+import com.faithdeveloper.explore.viewholder.BaseViewHolder
+import com.faithdeveloper.explore.R
+import com.faithdeveloper.explore.util.Utils.CHILD
+import com.faithdeveloper.explore.util.Utils.CONTINENT
+import com.faithdeveloper.explore.util.Utils.PARENT
 import com.faithdeveloper.explore.databinding.FilterHeaderBinding
 import com.faithdeveloper.explore.databinding.FilterItemBinding
+import com.faithdeveloper.explore.models.FilterChild
+import com.faithdeveloper.explore.models.FilterHeader
 
 class FilterAdapter(
     private val filters: MutableList<FilterHeader>,

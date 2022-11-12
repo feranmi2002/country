@@ -1,11 +1,9 @@
-package com.faithdeveloper.explore
+package com.faithdeveloper.explore.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.faithdeveloper.explore.Utils.CHILD
-import com.faithdeveloper.explore.Utils.PARENT
-import com.faithdeveloper.explore.databinding.FilterItemBinding
+import com.faithdeveloper.explore.viewholder.BaseViewHolder
 import com.faithdeveloper.explore.databinding.LanguagesListItemBinding
 
 class LanguageAdapter(

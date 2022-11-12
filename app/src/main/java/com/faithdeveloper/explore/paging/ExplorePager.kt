@@ -1,11 +1,13 @@
-package com.faithdeveloper.explore
+package com.faithdeveloper.explore.paging
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.faithdeveloper.explore.util.ITEM_COMPARATOR
 import com.faithdeveloper.explore.databinding.CountriesListItemBinding
+import com.faithdeveloper.explore.models.Country
 
 class ExplorePager(private val onClick: (country: Country) -> Unit) :
     PagingDataAdapter<Country, ExplorePager.ExploreViewHolder>(ITEM_COMPARATOR) {

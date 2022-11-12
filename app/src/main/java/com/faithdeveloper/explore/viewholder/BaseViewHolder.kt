@@ -1,4 +1,4 @@
-package com.faithdeveloper.explore
+package com.faithdeveloper.explore.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

@@ -1,4 +1,4 @@
-package com.faithdeveloper.explore
+package com.faithdeveloper.explore.retrofit
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient

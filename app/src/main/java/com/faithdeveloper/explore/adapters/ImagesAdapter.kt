@@ -1,4 +1,4 @@
-package com.faithdeveloper
+package com.faithdeveloper.explore.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
