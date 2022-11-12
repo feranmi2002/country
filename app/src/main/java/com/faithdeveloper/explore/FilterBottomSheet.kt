@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.faithdeveloper.explore.Utils.CONTINENT
 import com.faithdeveloper.explore.Utils.PARENT
 import com.faithdeveloper.explore.Utils.TIME_ZONE
@@ -12,6 +13,7 @@ import com.faithdeveloper.explore.databinding.FilterLayoutBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class FilterBottomSheet() : BottomSheetDialogFragment() {
+    private lateinit var filterInterface: FilterInterface
     private var _binding: FilterLayoutBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: FilterAdapter
@@ -31,10 +33,12 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.recycler.layoutManager = layoutManager
         binding.recycler.adapter = adapter
         reset()
         showResults()
-        dismiss()
+        close()
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -89,11 +93,13 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
     }
 
     private fun showResults(){
-        if (adapter.checkAnyCheckboxHasBeenChecked() ==0) Toast.makeText(requireContext(), getString(R.string.choose_filters), Toast.LENGTH_SHORT).show()
-        else {
-            val continents = adapter.getChosenContinents()
-            val timeZones = adapter.getChosenTimeZones()
-            TODO("Send to backend")
+        binding.showResult.setOnClickListener {
+            if (adapter.checkAnyCheckboxHasBeenChecked() ==0) Toast.makeText(requireContext(), getString(R.string.choose_filters), Toast.LENGTH_SHORT).show()
+            else {
+                val continents = adapter.getChosenContinents()
+                val timeZones = adapter.getChosenTimeZones()
+                TODO("Send to backend")
+            }
         }
     }
 
@@ -101,5 +107,14 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
         binding.cancel.setOnClickListener {
             dismiss()
         }
+    }
+
+    companion object{
+        fun instance(filterInterface:FilterInterface):FilterBottomSheet{
+            return FilterBottomSheet().apply {
+                this.filterInterface = filterInterface
+            }
+        }
+        const val TAG = "FilterBottomSheet"
     }
 }

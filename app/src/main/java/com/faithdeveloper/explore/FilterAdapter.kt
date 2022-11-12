@@ -133,22 +133,20 @@ class FilterAdapter(
 
     fun checkAnyCheckboxHasBeenChecked(): Int {
         var countOfCheckedBoxes = 0
-        var index = dataMapOfTimeZones.size
+        var index = dataMapOfTimeZones.size-1
         var listOfData = dataMapOfTimeZones.toList()
         do {
             if (listOfData[index].second) countOfCheckedBoxes += 1
             else index -= 1
-        }
-        while (countOfCheckedBoxes == 0 && index > 0)
+        } while (countOfCheckedBoxes == 0 && index > 0)
 
         if (countOfCheckedBoxes == 0) {
             listOfData = dataMapOfContinents.toList()
-            index = dataMapOfContinents.size
+            index = dataMapOfContinents.size -1
             do {
                 if (listOfData[index].second) countOfCheckedBoxes += 1
                 else index -= 1
-            }
-            while (countOfCheckedBoxes == 0 && index > 0)
+            } while (countOfCheckedBoxes == 0 && index > 0)
         }
         return countOfCheckedBoxes
     }

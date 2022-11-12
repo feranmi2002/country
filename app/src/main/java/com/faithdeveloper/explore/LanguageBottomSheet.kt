@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.faithdeveloper.explore.databinding.LanguagesLayoutBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -11,6 +12,7 @@ class LanguageBottomSheet() : BottomSheetDialogFragment() {
     private var _binding: LanguagesLayoutBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: LanguageAdapter
+    private lateinit var filterInterface:FilterInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         createAdapter()
@@ -27,6 +29,8 @@ class LanguageBottomSheet() : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.recycler.layoutManager = layoutManager
         binding.recycler.adapter = adapter
         cancel()
         super.onViewCreated(view, savedInstanceState)
@@ -62,5 +66,14 @@ class LanguageBottomSheet() : BottomSheetDialogFragment() {
         binding.cancel.setOnClickListener {
             dismiss()
         }
+    }
+
+    companion object{
+        fun instance(filterInterface:FilterInterface):LanguageBottomSheet{
+            return LanguageBottomSheet().apply {
+                this.filterInterface = filterInterface
+            }
+        }
+        const val TAG = "LanguageBottomSheet"
     }
 }
