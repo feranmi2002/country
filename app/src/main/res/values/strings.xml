@@ -13,6 +13,8 @@
     <string name="official_language">Official Language</string>
     <string name="ethnic_group">Ethnic Group</string>
     <string name="choose_filters">You haven\'t chosen any Filters.</string>
+    <string name="retry">RETRY</string>
+    <string name="an_error_occurred">An error occurred</string>
 
     <string-array name="filter_headers">
         <item>Continent</item>

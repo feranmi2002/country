@@ -33,7 +33,8 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/reset"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toTopOf="@id/reset"
         app:layout_constraintTop_toBottomOf="@id/languages"
         tools:listitem="@layout/languages_list_item" />
 

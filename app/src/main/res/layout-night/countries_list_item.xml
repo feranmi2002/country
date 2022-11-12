@@ -8,6 +8,7 @@
     android:layout_marginBottom="13dp"
     android:background="#000F24"
     android:paddingStart="24dp"
+    android:id="@+id/item"
     android:paddingEnd="16dp">
 
     <com.google.android.material.imageview.ShapeableImageView
