@@ -119,7 +119,7 @@ class MainFragment: Fragment(), FilterInterface {
 
     private fun setUpAdapter() {
     pagerAdapter = ExplorePager {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailsFragment())
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailsFragment(it))
     }
     }
     private fun observer(){

@@ -16,33 +16,5 @@
     <string name="retry">RETRY</string>
     <string name="an_error_occurred">An error occurred</string>
 
-    <string-array name="filter_headers">
-        <item>Continent</item>
-        <item>Time Zone</item>
-    </string-array>
-    <string-array name="continents">
-        <item>Africa</item>
-        <item>Antarctica</item>
-        <item>Asia</item>
-        <item>Australia</item>
-        <item>Europe</item>
-        <item>North America</item>
-        <item>South America</item>
-    </string-array>
-    <string-array name="time_zones">
-        <item>GMT+1:00</item>
-        <item>GMT+2:00</item>
-        <item>GMT+3:00</item>
-        <item>GMT+4:00</item>
-        <item>GMT+5:00</item>
-        <item>GMT+6:00</item>
-        <item>GMT+7:00</item>
-        <item>GMT+-6:00</item>
-        <item>GMT+-5:00</item>
-        <item>GMT+-4:00</item>
-        <item>GMT+-3:00</item>
-        <item>GMT+-2:00</item>
-        <item>GMT+-1:00</item>
-        <item>GMT+0:00</item>
-    </string-array>
+
 </resources>

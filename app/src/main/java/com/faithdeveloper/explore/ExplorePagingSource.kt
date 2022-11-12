@@ -4,12 +4,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 
 class ExplorePagingSource(val apiHelper: ApiHelper, val name:String?) : PagingSource<Int, Country>() {
-    var response: List<Country>? = null
+    var response: List<Country> = listOf()
 
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Country> {
         return try {
-            if (response == null) {
+            if (response.isEmpty() || name != null ) {
                 if (params.key == 1) {
                     if (name == null) {
                         response = Repository.getAllCountries(apiHelper)
