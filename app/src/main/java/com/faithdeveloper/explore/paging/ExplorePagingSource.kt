@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.faithdeveloper.explore.models.Country
 import com.faithdeveloper.explore.retrofit.ApiHelper
 import com.faithdeveloper.explore.retrofit.Repository
+import com.faithdeveloper.explore.util.Utils
 
 class ExplorePagingSource(
     val apiHelper: ApiHelper,
@@ -21,20 +22,21 @@ class ExplorePagingSource(
             if (response.isEmpty()) {
                 if (params.key == 1) {
                     response = if (name == null) {
-                        Repository.getAllCountries(apiHelper)
+                        Utils.sortAlphabetically(Repository.getAllCountries(apiHelper))
                     } else {
                         Repository.getCountry(name!!, apiHelper)
                     }
                 }
             } else {
                 if (name != null) {
-                    response = Repository.getCountry(name!!, apiHelper)
+                    response = Utils.sortAlphabetically(Repository.getCountry(name!!, apiHelper))
                     name = null
                 } else if (language != null) {
-                    response = Repository.getLangauge(language!!, apiHelper)
+                    response =
+                        Utils.sortAlphabetically(Repository.getLangauge(language!!, apiHelper))
                     language = null
                 } else if (region != null) {
-                    response = Repository.getRegion(region!!, apiHelper)
+                    response = Utils.sortAlphabetically(Repository.getRegion(region!!, apiHelper))
                     region = null
                 }
             }

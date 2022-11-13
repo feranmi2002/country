@@ -14,7 +14,9 @@ class ExploreViewModel(val apiHelper: ApiHelper):ViewModel() {
     val nameQuery = MutableLiveData<String>(null)
     var queryType = ""
     private val result = nameQuery.switchMap {
-        allCountries(it, queryType ).cachedIn(viewModelScope)
+         allCountries(it, queryType )
+            .liveData
+            .cachedIn(viewModelScope)
     }
     val _result get() = result
 
@@ -27,5 +29,5 @@ class ExploreViewModel(val apiHelper: ApiHelper):ViewModel() {
             }
 
         }, initialKey = 1
-    ).liveData
+    )
 }
