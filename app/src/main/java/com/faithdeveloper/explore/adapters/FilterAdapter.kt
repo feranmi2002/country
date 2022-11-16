@@ -32,8 +32,12 @@ class FilterAdapter(
         init {
             checkBox.setOnCheckedChangeListener { compoundButton, state ->
                 when (mItem?.child?.type) {
-                    CONTINENT -> dataMapOfContinents[mItem?.child?.data!!.first()] = state
-                    else -> dataMapOfTimeZones[mItem?.child?.data!!.first()] = state
+                    CONTINENT -> {
+                        dataMapOfContinents[mItem?.child?.data!!.first()] = state
+                    }
+                    else -> {
+                        dataMapOfTimeZones[mItem?.child?.data!!.first()] = state
+                    }
                 }
             }
         }
@@ -142,7 +146,7 @@ class FilterAdapter(
         do {
             if (listOfData[index].second) countOfCheckedBoxes += 1
             else index -= 1
-        } while (countOfCheckedBoxes == 0 && index > 0)
+        } while (countOfCheckedBoxes == 0 && index >=0)
 
         if (countOfCheckedBoxes == 0) {
             listOfData = dataMapOfContinents.toList()
@@ -150,7 +154,7 @@ class FilterAdapter(
             do {
                 if (listOfData[index].second) countOfCheckedBoxes += 1
                 else index -= 1
-            } while (countOfCheckedBoxes == 0 && index > 0)
+            } while (countOfCheckedBoxes == 0 && index >= 0)
         }
         return countOfCheckedBoxes
     }
