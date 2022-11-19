@@ -22,8 +22,8 @@ The design was completely made by me. And as mentioned before, follows the Mater
 ## Challenges
 There was no major challenge I faced as I was already familiar with building such an app.
 
-## Download Resume from [here](https://drive.google.com/file/d/1S8KDdxgeS2IbmAQyh2nuw_34iW8S8zT0/view?usp=sharing)
+## Download Resume from [here](https://drive.google.com/file/d/1kWKAM2hvxnUBeJI1OMz_iE609F_tHa2T/view?usp=sharing)
 
-## Appetize.io Link [here](https://appetize.io/app/illhmgqawlkcw35s36y2hnzeem?device=pixel4&osVersion=12.0&scale=100)
+## Appetize.io Link [here](https://appetize.io/app/jvrq5rzlhzhfcq725ics3jzlhq)
 
 
