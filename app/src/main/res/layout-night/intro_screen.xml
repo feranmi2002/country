@@ -51,6 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="28dp"
+                    android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/moon_background"
                     app:layout_constraintBottom_toBottomOf="@id/app_logo"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -83,6 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
+                    android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/language_chooser_background"
                     android:drawableStart="@drawable/ic_global_9348"
                     android:elevation="2dp"
@@ -99,6 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
+                    android:foreground="?attr/selectableItemBackground"
                     android:layout_marginEnd="24dp"
                     android:background="@drawable/filter_background"
                     android:drawableStart="@drawable/ic_filter_6555__1_"
@@ -132,10 +135,9 @@
                 android:paddingTop="16dp"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/countries_list_item" />
-
-            <include
-                android:id="@+id/feedBack"
-                layout="@layout/search_feedback"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+    <include
+        android:id="@+id/feedBack"
+        layout="@layout/search_feedback"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

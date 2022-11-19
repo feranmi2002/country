@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item"
     android:layout_width="match_parent"
-    android:layout_height="46dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="13dp"
     android:layout_marginBottom="13dp"
     android:background="#000F24"
+    android:foreground="?attr/selectableItemBackground"
     android:paddingStart="24dp"
-    android:id="@+id/item"
     android:paddingEnd="16dp">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -24,11 +25,11 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/country"
         android:layout_width="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textColor="#F2F4F7"
         android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/flag"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Afghanistan" />
@@ -36,12 +37,12 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/capital"
         android:layout_width="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
         android:textColor="#98A2B3"
         android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/flag"
         app:layout_constraintTop_toBottomOf="@id/country"
         tools:text="Kabul" />

@@ -19,4 +19,8 @@
     <style name="CurvedCorners" parent="">
         <item name="cornerSize">20%</item>
     </style>
+
+    <style name="Theme.Explore.Ripple">
+        <item name="background">?selectableItemBackground</item>
+    </style>
 </resources>

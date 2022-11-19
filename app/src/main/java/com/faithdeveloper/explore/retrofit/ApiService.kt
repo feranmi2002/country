@@ -10,17 +10,17 @@ interface ApiService {
     suspend fun getCountries(): List<Country>
 
     @GET("name/{name}")
-    suspend fun getCountry(
+    suspend fun getACountry(
         @Path("name") name:String
     ):List<Country>
 
     @GET("lang/{lang}")
-    suspend fun getLanguage(
+    suspend fun getByLanguage(
         @Path("lang") lang:String
     ):List<Country>
 
-    @GET("lang/{region}")
-    suspend fun getContinent(
+    @GET("region/{region}")
+    suspend fun getByContinent(
         @Path("region") continent:String
     ):List<Country>
 }

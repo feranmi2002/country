@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
+    android:layout_gravity="center"
     android:padding="8dp">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -13,33 +13,46 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/button_retry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:visibility="invisible"
-        android:textColor="@color/design_default_color_error"
         android:text="@string/an_error_occurred"
-        app:layout_constraintTop_toBottomOf="@id/progress_circular"
+        android:textColor="@color/design_default_color_error"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/button_retry"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="8dp" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/empty_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_result_found"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_retry"/>
+
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/retry"
-        android:id="@+id/button_retry"
-        app:layout_constraintTop_toBottomOf="@id/info"
         android:visibility="invisible"
-        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

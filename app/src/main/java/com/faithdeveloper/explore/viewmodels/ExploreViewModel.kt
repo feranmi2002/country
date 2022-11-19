@@ -5,29 +5,36 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.liveData
-import com.faithdeveloper.explore.util.Utils.LANGUAGE_QUERY_TYPE
-import com.faithdeveloper.explore.util.Utils.NAME_QUERY_TYPE
 import com.faithdeveloper.explore.paging.ExplorePagingSource
 import com.faithdeveloper.explore.retrofit.ApiHelper
 
-class ExploreViewModel(val apiHelper: ApiHelper):ViewModel() {
-    val nameQuery = MutableLiveData<String>(null)
-    var queryType = ""
-    private val result = nameQuery.switchMap {
-         allCountries(it, queryType )
+class ExploreViewModel(private val apiHelper: ApiHelper) : ViewModel() {
+    val query = MutableLiveData<String>(null)
+    var queryType: String? = null
+    private val _result = query.switchMap {
+        request(it, queryType)
             .liveData
             .cachedIn(viewModelScope)
     }
-    val _result get() = result
+    val result get() = _result
 
-    private fun allCountries(query:String?, queryType:String)= Pager(
+    private fun request(query: String?, queryType: String?) = Pager(
         config = PagingConfig(pageSize = 10), pagingSourceFactory = {
-            when(queryType){
-                NAME_QUERY_TYPE ->  ExplorePagingSource(apiHelper, query,null, null)
-                LANGUAGE_QUERY_TYPE ->  ExplorePagingSource(apiHelper, null, query, null)
-                else ->  ExplorePagingSource(apiHelper, null, null, query)
-            }
-
+            ExplorePagingSource(apiHelper, query, queryType)
         }, initialKey = 1
     )
+
+    @Suppress("UNCHECKED_CAST")
+    companion object {
+        fun factory(apiHelper: ApiHelper): ViewModelProvider.Factory {
+            val provider = object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    if (modelClass.isAssignableFrom(ExploreViewModel::class.java))
+                        return (ExploreViewModel(apiHelper)) as T
+                    else throw IllegalArgumentException("Unknown class")
+                }
+            }
+            return provider
+        }
+    }
 }

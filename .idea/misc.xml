@@ -29,29 +29,31 @@
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/languages_clear_background.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/moon_background.xml" value="0.1905" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/search_country_background.xml" value="0.1" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/selectable.xml" value="0.1875" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/drawable/sun_background.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/font/axiforma.xml" value="0.11851851851851852" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/countries_list_item.xml" value="0.25" />
-        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/details_screen.xml" value="0.14814814814814814" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/details_screen.xml" value="0.25" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/filter_header.xml" value="0.33" />
-        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/filter_item.xml" value="0.67" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/filter_item.xml" value="0.25" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/filter_layout.xml" value="0.3388888888888889" />
-        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/intro_screen.xml" value="0.14" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/intro_screen.xml" value="0.258974358974359" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-night/languages_layout.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-notnight/filter_layout.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout-notnight/languages.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/countries_list_item.xml" value="0.33" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/details_screen.xml" value="0.25" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/empty_result_feedback.xml" value="0.17685185185185184" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/filter_header.xml" value="0.25" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/filter_item.xml" value="0.33" />
-        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/filter_layout.xml" value="0.25" />
-        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/intro_screen.xml" value="0.1" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/filter_layout.xml" value="0.22" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/intro_screen.xml" value="0.258974358974359" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/languages.xml" value="0.5" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/languages_layout.xml" value="0.33" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/languages_list_item.xml" value="0.25" />
         <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/pictures_item.xml" value="0.21428571428571427" />
-        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/search_feedback.xml" value="0.1" />
+        <entry key="..\:/Users/oluwa/AndroidStudioProjects/Explore/app/src/main/res/layout/search_feedback.xml" value="0.2" />
       </map>
     </option>
   </component>

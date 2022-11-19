@@ -15,6 +15,8 @@
     <string name="choose_filters">You haven\'t chosen any Filters.</string>
     <string name="retry">RETRY</string>
     <string name="an_error_occurred">An error occurred</string>
+    <string name="emoty_search_keyword">Enter a country</string>
+    <string name="no_result_found">No result found</string>
 
 
 </resources>

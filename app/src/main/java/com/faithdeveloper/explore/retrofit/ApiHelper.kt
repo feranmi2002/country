@@ -6,16 +6,16 @@ class ApiHelper(private val apiService: ApiService) {
     suspend fun getAllCountries(): List<Country> {
         return apiService.getCountries()
     }
-    suspend fun getCountry(name:String): List<Country> {
-        return apiService.getCountry(name)
+    suspend fun getACountry(name:String): List<Country> {
+        return apiService.getACountry(name)
     }
 
-    suspend fun getRegion(region:String):List<Country>{
-        return apiService.getContinent(region)
+    suspend fun getByRegion(region:String):List<Country>{
+        return apiService.getByContinent(region)
     }
 
-    suspend fun getLanguage(language:String):List<Country>{
-        return apiService.getLanguage(language)
+    suspend fun getByLanguage(language:String):List<Country>{
+        return apiService.getByLanguage(language)
     }
 
 }

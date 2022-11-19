@@ -4,13 +4,13 @@ import com.faithdeveloper.explore.models.Country
 
 object Repository {
     suspend fun getAllCountries(apiHelper: ApiHelper): List<Country> = apiHelper.getAllCountries()
-    suspend fun getCountry(name: String, apiHelper: ApiHelper): List<Country> =
-        apiHelper.getCountry(name)
+    suspend fun getByName(name: String, apiHelper: ApiHelper): List<Country> =
+        apiHelper.getACountry(name)
 
-    suspend fun getLangauge(language: String, apiHelper: ApiHelper): List<Country> =
-        apiHelper.getLanguage(language)
+    suspend fun getByLanguage(language: String, apiHelper: ApiHelper): List<Country> =
+        apiHelper.getByLanguage(language)
 
-    suspend fun getRegion(region: String, apiHelper: ApiHelper): List<Country> =
-        apiHelper.getLanguage(region)
+    suspend fun getByRegion(region: String, apiHelper: ApiHelper): List<Country> =
+        apiHelper.getByRegion(region)
 
 }

@@ -1,36 +1,45 @@
 package com.faithdeveloper.explore.fragments
+
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.faithdeveloper.explore.paging.ExplorePager
-import com.faithdeveloper.explore.viewmodels.ExploreViewModel
-import com.faithdeveloper.explore.util.FilterInterface
 import com.faithdeveloper.explore.R
-import com.faithdeveloper.explore.util.Utils.NAME_QUERY_TYPE
 import com.faithdeveloper.explore.databinding.IntroScreenBinding
+import com.faithdeveloper.explore.paging.ExplorePager
 import com.faithdeveloper.explore.retrofit.ApiHelper
 import com.faithdeveloper.explore.retrofit.ServiceBuilder
+import com.faithdeveloper.explore.util.FilterInterface
+import com.faithdeveloper.explore.util.Utils.NAME_QUERY_TYPE
+import com.faithdeveloper.explore.viewmodels.ExploreViewModel
 import kotlinx.coroutines.launch
 
-class MainFragment: Fragment(), FilterInterface {
-    private  var _binding:IntroScreenBinding? = null
-    private  val binding get() = _binding!!
+class MainFragment : Fragment(), FilterInterface {
+    private var _binding: IntroScreenBinding? = null
+    private val binding get() = _binding!!
     private lateinit var pagerAdapter: ExplorePager
-    private lateinit var viewModel: ExploreViewModel
+    private val viewModel: ExploreViewModel by viewModels {
+        ExploreViewModel.factory(
+            ApiHelper(
+                ServiceBuilder.apiService
+            )
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel = ExploreViewModel(ApiHelper(ServiceBuilder.apiService))
         setUpAdapter()
         super.onCreate(savedInstanceState)
     }
@@ -39,15 +48,13 @@ class MainFragment: Fragment(), FilterInterface {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = IntroScreenBinding.inflate(layoutInflater, container, false)
-        return  binding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.recycler.layoutManager = layoutManager
-        binding.recycler.adapter = pagerAdapter
+        setUpRecycler()
         setUpLoadState()
         search()
         language()
@@ -58,7 +65,14 @@ class MainFragment: Fragment(), FilterInterface {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun retry(){
+    private fun setUpRecycler() {
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.recycler.layoutManager = layoutManager
+        binding.recycler.adapter = pagerAdapter
+    }
+
+    private fun retry() {
         binding.feedBack.buttonRetry.setOnClickListener {
             pagerAdapter.retry()
         }
@@ -70,15 +84,20 @@ class MainFragment: Fragment(), FilterInterface {
     }
 
     private fun search() {
-        binding.searchCountry?.setOnEditorActionListener { textView, actionId, keyEvent ->
+        binding.searchCountry.setOnEditorActionListener { textView, actionId, keyEvent ->
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
-                        if (binding.searchCountry.text!!.isNotBlank()){
-                            viewModel.queryType = NAME_QUERY_TYPE
-                            viewModel.nameQuery.value = binding.searchCountry.text.toString().trim()
-                        }else{
-                            Toast.makeText(requireContext(), "Enter a country", Toast.LENGTH_SHORT).show()
-                        }
+                    if (binding.searchCountry.text!!.isNotBlank()) {
+                        hideKeyboard(binding.root)
+                        viewModel.queryType = NAME_QUERY_TYPE
+                        viewModel.query.value = binding.searchCountry.text.toString().trim()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.emoty_search_keyword),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                     true
                 }
                 else -> false
@@ -86,29 +105,39 @@ class MainFragment: Fragment(), FilterInterface {
         }
     }
 
-    private fun filter(){
+    private fun hideKeyboard(rootView: View) {
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(
+            rootView.windowToken,
+            InputMethodManager.RESULT_UNCHANGED_SHOWN
+        )
+    }
+
+    private fun filter() {
         binding.filter.setOnClickListener {
             openBottomSheetDialog("filter")
         }
     }
-    private fun language(){
+
+    private fun language() {
         binding.languageChooser.setOnClickListener {
             openBottomSheetDialog("langauge")
         }
     }
 
-    private fun openBottomSheetDialog(type:String){
-        val bottomSheet = when(type){
+    private fun openBottomSheetDialog(type: String) {
+        val bottomSheet = when (type) {
             "filter" -> FilterBottomSheet.instance(this)
             else -> LanguageBottomSheet.instance(this)
         }
         bottomSheet.show(requireActivity().supportFragmentManager, FilterBottomSheet.TAG)
     }
 
-    private fun darkOrLightMode(){
+    private fun darkOrLightMode() {
         binding.lightDarkMode.setOnClickListener {
-            when(requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK){
-                Configuration.UI_MODE_NIGHT_NO ->{
+            when (requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_NO -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     binding.lightDarkMode.setImageResource(R.drawable.ic_moon)
                 }
@@ -121,17 +150,23 @@ class MainFragment: Fragment(), FilterInterface {
     }
 
     override fun filter(filter: String, type: String) {
-        viewModel.queryType =type
-        viewModel.nameQuery.value = filter
+        binding.searchCountry.setText("")
+        viewModel.queryType = type
+        viewModel.query.value = filter
     }
 
     private fun setUpAdapter() {
-    pagerAdapter = ExplorePager {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailsFragment(it))
+        pagerAdapter = ExplorePager {
+            findNavController().navigate(
+                MainFragmentDirections.actionMainFragmentToDetailsFragment(
+                    it
+                )
+            )
+        }
     }
-    }
-    private fun observer(){
-        viewModel._result.observe(viewLifecycleOwner){
+
+    private fun observer() {
+        viewModel.result.observe(viewLifecycleOwner) {
             pagerAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
     }
@@ -139,14 +174,17 @@ class MainFragment: Fragment(), FilterInterface {
     private fun setUpLoadState() {
         lifecycleScope.launch {
             pagerAdapter.loadStateFlow.collect { loadState ->
-                val isListEmpty =
+
+                binding.feedBack.emptyResult.isVisible =
                     loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount == 0
                 // show empty list
-                binding.feedBack.info.isVisible = isListEmpty
+
+                if (loadState.refresh is LoadState.Loading) binding.recycler.removeAllViewsInLayout()
 
                 //show loading spinner during initial load or refresh
                 binding.feedBack.progressCircular.isVisible =
                     loadState.refresh is LoadState.Loading
+                enableOrDisableViewsBasedOnLoadState(loadState.refresh is LoadState.Loading)
                 // show error info
                 binding.feedBack.info.isVisible =
                     loadState.refresh is LoadState.Error && pagerAdapter.itemCount == 0
@@ -154,6 +192,12 @@ class MainFragment: Fragment(), FilterInterface {
                     loadState.refresh is LoadState.Error && pagerAdapter.itemCount == 0
             }
         }
+    }
+
+    private fun enableOrDisableViewsBasedOnLoadState(isLoading: Boolean) {
+        binding.lightDarkMode.isEnabled = !isLoading
+        binding.languageChooser.isEnabled = !isLoading
+        binding.filter.isEnabled = !isLoading
     }
 
 }

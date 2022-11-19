@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000F24"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp">
-
+    android:background="#000F24">
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/item"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:paddingStart="24dp"
         android:textColor="#D0D5DD"
         android:textSize="16sp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintEnd_toStartOf="@id/checkbox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

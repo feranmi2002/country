@@ -3,21 +3,21 @@ package com.faithdeveloper.explore.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.faithdeveloper.explore.viewholder.BaseViewHolder
 import com.faithdeveloper.explore.R
-import com.faithdeveloper.explore.util.Utils.CHILD
-import com.faithdeveloper.explore.util.Utils.CONTINENT
-import com.faithdeveloper.explore.util.Utils.PARENT
 import com.faithdeveloper.explore.databinding.FilterHeaderBinding
 import com.faithdeveloper.explore.databinding.FilterItemBinding
 import com.faithdeveloper.explore.models.FilterChild
 import com.faithdeveloper.explore.models.FilterHeader
+import com.faithdeveloper.explore.util.Utils.CHILD
+import com.faithdeveloper.explore.util.Utils.PARENT
+import com.faithdeveloper.explore.viewholder.BaseViewHolder
 
 class FilterAdapter(
-    private val filters: MutableList<FilterHeader>,
-    private val dataMapOfContinents: MutableMap<String, Boolean>,
-    private val dataMapOfTimeZones: MutableMap<String, Boolean>
+    private var filters: MutableList<FilterHeader>,
+    private val positionOfSecondHeader: Int
 ) : RecyclerView.Adapter<BaseViewHolder>() {
+
+    private var _filters: MutableList<FilterHeader> = filters
 
     inner class HeaderViewHolder(val binding: FilterHeaderBinding) : BaseViewHolder(binding.root) {
         override fun bind(item: Any) {
@@ -25,29 +25,26 @@ class FilterAdapter(
         }
     }
 
-    inner class ChildViewHolder(val binding: FilterItemBinding) : BaseViewHolder(binding.root) {
+    inner class ChildViewHolder(private val binding: FilterItemBinding) :
+        BaseViewHolder(binding.root) {
         private val checkBox = binding.checkbox
+        private val text = binding.item
         private var mItem: FilterHeader? = null
 
         init {
+            text.setOnClickListener {
+                checkBox.performClick()
+            }
             checkBox.setOnCheckedChangeListener { compoundButton, state ->
-                when (mItem?.child?.type) {
-                    CONTINENT -> {
-                        dataMapOfContinents[mItem?.child?.data!!.first()] = state
-                    }
-                    else -> {
-                        dataMapOfTimeZones[mItem?.child?.data!!.first()] = state
-                    }
-                }
+                filters[adapterPosition].child.data.first().checked = state
+                if (state) clearPreviouslyCheckedBox(absoluteAdapterPosition)
             }
         }
 
         override fun bind(item: Any) {
             mItem = item as FilterHeader
-            binding.item.text = item.child.data.first()
-            if (item.child.type == CONTINENT) checkBox.isChecked =
-                dataMapOfContinents[item.child.data.first()]!!
-            else checkBox.isChecked = dataMapOfTimeZones[item.child.data.first()]!!
+            binding.item.text = item.child.data.first().title
+            checkBox.isChecked = item.child.data.first().checked
         }
     }
 
@@ -85,6 +82,8 @@ class FilterAdapter(
             }
         }
         holder.bind(filters[position])
+
+
     }
 
     override fun getItemCount() = filters.size
@@ -129,50 +128,49 @@ class FilterAdapter(
 //        notifyItemRangeRemoved(adapterPosition + 1, adapterPosition + count)
     }
 
-    fun clearChecks() {
-        dataMapOfTimeZones.onEachIndexed { index, entry ->
-            dataMapOfTimeZones[entry.key] = false
-        }
-        dataMapOfContinents.onEach {
-            dataMapOfContinents[it.key] = false
-        }
+    fun reset() {
+        filters = _filters
         notifyDataSetChanged()
     }
 
-    fun checkAnyCheckboxHasBeenChecked(): Int {
+    fun checkIfAnyCheckboxHasBeenChecked(): Boolean {
         var countOfCheckedBoxes = 0
-        var index = dataMapOfTimeZones.size-1
-        var listOfData = dataMapOfTimeZones.toList()
+        var index = filters.size - 1
         do {
-            if (listOfData[index].second) countOfCheckedBoxes += 1
+            if (filters[index].child.data.first().checked) countOfCheckedBoxes += 1
             else index -= 1
-        } while (countOfCheckedBoxes == 0 && index >=0)
-
-        if (countOfCheckedBoxes == 0) {
-            listOfData = dataMapOfContinents.toList()
-            index = dataMapOfContinents.size -1
-            do {
-                if (listOfData[index].second) countOfCheckedBoxes += 1
-                else index -= 1
-            } while (countOfCheckedBoxes == 0 && index >= 0)
         }
-        return countOfCheckedBoxes
+        while (countOfCheckedBoxes == 0 && index >= 0)
+        return countOfCheckedBoxes > 0
     }
 
-    fun getChosenContinents(): List<String> {
-        val continents = mutableListOf<String>()
-        dataMapOfContinents.onEach {
-            if (it.value) continents.add(it.key)
+    fun clearPreviouslyCheckedBox(position: Int) {
+        var positionOfPreviouslyCheckedBox: Int? = null
+        var index = 1
+        do {
+            val item = filters[index]
+            if (item.type == PARENT && item.child.data.first().title == "GMT+1:00") {
+                item.child.data.first().checked = false
+            }
+            if (item.child.data.first().checked && index != position) {
+                positionOfPreviouslyCheckedBox = index
+                item.child.data.first().checked = false
+                notifyItemChanged(index)
+            }
+            index += 1
         }
-        return continents
+        while (positionOfPreviouslyCheckedBox == null && index < filters.size)
     }
 
-    fun getChosenTimeZones(): List<String> {
-        val timeZones = mutableListOf<String>()
-        dataMapOfTimeZones.onEach {
-            if (it.value) timeZones.add(it.key)
+    fun getChosenChild(): FilterChild {
+        var chosenChild: FilterChild? = null
+        var index = 0
+        do {
+            if (filters[index].child.data.first().checked) chosenChild = filters[index].child
+            index += 1
         }
-        return timeZones
+        while (chosenChild == null)
+        return chosenChild
     }
 
     override fun getItemViewType(position: Int): Int {
