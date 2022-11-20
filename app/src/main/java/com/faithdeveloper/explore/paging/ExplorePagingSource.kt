@@ -21,32 +21,35 @@ class ExplorePagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Country> {
         return try {
-            if (response.isEmpty()) {
-                if (params.key == 1) {
-                    response = when (queryType) {
-                        NAME_QUERY_TYPE -> Utils.sortAlphabetically(
-                            Repository.getByName(
-                                query!!,
-                                apiHelper
+            try {
+                if (response.isEmpty()) {
+                    if (params.key == 1) {
+                        response = when (queryType) {
+                            NAME_QUERY_TYPE -> Utils.sortAlphabetically(
+                                Repository.getByName(
+                                    query!!,
+                                    apiHelper
+                                )
                             )
-                        )
-                        REGION_QUERY_TYPE -> Utils.sortAlphabetically(
-                            Repository.getByRegion(
-                                query!!,
-                                apiHelper
+                            REGION_QUERY_TYPE -> Utils.sortAlphabetically(
+                                Repository.getByRegion(
+                                    query!!,
+                                    apiHelper
+                                )
                             )
-                        )
-                        LANGUAGE_QUERY_TYPE -> Utils.sortAlphabetically(
-                            Repository.getByRegion(
-                                query!!,
-                                apiHelper
+                            LANGUAGE_QUERY_TYPE -> Utils.sortAlphabetically(
+                                Repository.getByRegion(
+                                    query!!,
+                                    apiHelper
+                                )
                             )
-                        )
-                        else -> Utils.sortAlphabetically(Repository.getAllCountries(apiHelper))
+                            else -> Utils.sortAlphabetically(Repository.getAllCountries(apiHelper))
+                        }
                     }
                 }
+            } catch (e: retrofit2.HttpException) {
+                if (e.code() != 404) throw e
             }
-
             val result = if (params.key == 1) {
                 when {
                     response.size >= 9 -> {
@@ -65,16 +68,12 @@ class ExplorePagingSource(
                 )
             )
             val currentKey = params.key
-            val nextKey = when {
-                params.key != null -> {
-                    currentKey?.plus(1)
-                }
-                result.size < 20 -> {
-                    null
-                }
-                else -> {
-                    null
-                }
+            val nextKey = if (result.size < 20) {
+                null
+            } else if (params.key != null) {
+                currentKey?.plus(1)
+            } else {
+                null
             }
             LoadResult.Page(
                 data = result,

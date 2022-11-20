@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.faithdeveloper.explore.R
 import com.faithdeveloper.explore.databinding.IntroScreenBinding
@@ -25,12 +26,14 @@ import com.faithdeveloper.explore.retrofit.ServiceBuilder
 import com.faithdeveloper.explore.util.FilterInterface
 import com.faithdeveloper.explore.util.Utils.NAME_QUERY_TYPE
 import com.faithdeveloper.explore.viewmodels.ExploreViewModel
+import kotlinx.android.synthetic.main.intro_screen.*
 import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(), FilterInterface {
     private var _binding: IntroScreenBinding? = null
     private val binding get() = _binding!!
     private lateinit var pagerAdapter: ExplorePager
+    private var pagerAdapterExternallyMadeEmpty = false
     private val viewModel: ExploreViewModel by viewModels {
         ExploreViewModel.factory(
             ApiHelper(
@@ -89,6 +92,8 @@ class MainFragment : Fragment(), FilterInterface {
                 EditorInfo.IME_ACTION_SEARCH -> {
                     if (binding.searchCountry.text!!.isNotBlank()) {
                         hideKeyboard(binding.root)
+                        pagerAdapterExternallyMadeEmpty = true
+                        pagerAdapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
                         viewModel.queryType = NAME_QUERY_TYPE
                         viewModel.query.value = binding.searchCountry.text.toString().trim()
                     } else {
@@ -174,22 +179,38 @@ class MainFragment : Fragment(), FilterInterface {
     private fun setUpLoadState() {
         lifecycleScope.launch {
             pagerAdapter.loadStateFlow.collect { loadState ->
-
-                binding.feedBack.emptyResult.isVisible =
-                    loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount == 0
                 // show empty list
+                if (loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached && pagerAdapter.itemCount < 1) {
+                    recycler.isVisible = false
+                    if (!pagerAdapterExternallyMadeEmpty) {
+                        binding.feedBack.emptyResult.isVisible = true
+                    }
 
-                if (loadState.refresh is LoadState.Loading) binding.recycler.removeAllViewsInLayout()
+                } else {
+                    binding.feedBack.emptyResult.isVisible = false
+                    pagerAdapterExternallyMadeEmpty = false
+                }
+//                hide recycler on error or on loading
+                binding.recycler.isVisible =
+                    !(loadState.refresh is LoadState.Loading || loadState.refresh is LoadState.Error)
 
                 //show loading spinner during initial load or refresh
                 binding.feedBack.progressCircular.isVisible =
                     loadState.refresh is LoadState.Loading
+
                 enableOrDisableViewsBasedOnLoadState(loadState.refresh is LoadState.Loading)
+
                 // show error info
                 binding.feedBack.info.isVisible =
                     loadState.refresh is LoadState.Error && pagerAdapter.itemCount == 0
                 binding.feedBack.buttonRetry.isVisible =
                     loadState.refresh is LoadState.Error && pagerAdapter.itemCount == 0
+
+//                how recycler on data loaded
+                if (loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount > 0) {
+                    binding.recycler.isVisible = true
+                }
+
             }
         }
     }

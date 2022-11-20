@@ -26,6 +26,7 @@
         android:textColor="@color/design_default_color_error"
         android:visibility="invisible"
         tools:visibility="visible"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/button_retry"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +39,7 @@
         android:text="@string/no_result_found"
         android:visibility="invisible"
         tools:visibility="visible"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/button_retry"/>
