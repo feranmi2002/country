@@ -8,7 +8,7 @@ import com.faithdeveloper.explore.retrofit.Repository
 import com.faithdeveloper.explore.util.Utils
 import com.faithdeveloper.explore.util.Utils.LANGUAGE_QUERY_TYPE
 import com.faithdeveloper.explore.util.Utils.NAME_QUERY_TYPE
-import com.faithdeveloper.explore.util.Utils.REGION_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.CONTINENT_QUERY_TYPE
 
 class ExplorePagingSource(
     private val apiHelper: ApiHelper,
@@ -31,7 +31,7 @@ class ExplorePagingSource(
                                     apiHelper
                                 )
                             )
-                            REGION_QUERY_TYPE -> Utils.sortAlphabetically(
+                            CONTINENT_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByRegion(
                                     query!!,
                                     apiHelper
@@ -53,7 +53,7 @@ class ExplorePagingSource(
             val result = if (params.key == 1) {
                 when {
                     response.size >= 9 -> {
-                        response.slice(IntRange(0, 9))
+                        response.slice(IntRange(0, 19))
                     }
                     else -> {
                         val list = mutableListOf<Country>()

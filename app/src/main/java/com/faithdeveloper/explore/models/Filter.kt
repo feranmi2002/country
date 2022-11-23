@@ -1,6 +1,6 @@
 package com.faithdeveloper.explore.models
 
-data class FilterGrandChild(
+data class Filter(
     var title:String,
     var checked:Boolean = false
 ){

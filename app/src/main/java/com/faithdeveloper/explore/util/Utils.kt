@@ -10,7 +10,7 @@ object Utils {
     const val TIME_ZONE = "Time Zone"
     const val NAME_QUERY_TYPE = "name"
     const val LANGUAGE_QUERY_TYPE = "language"
-    const val REGION_QUERY_TYPE = "region"
+    const val CONTINENT_QUERY_TYPE = "region"
     const val SEPARATOR = "separator"
 
     fun sortAlphabetically(list:List<Country>): List<Country> {

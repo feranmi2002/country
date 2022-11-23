@@ -9,23 +9,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.faithdeveloper.explore.R
 import com.faithdeveloper.explore.adapters.FilterAdapter
 import com.faithdeveloper.explore.databinding.FilterLayoutBinding
-import com.faithdeveloper.explore.models.FilterChild
-import com.faithdeveloper.explore.models.FilterGrandChild
-import com.faithdeveloper.explore.models.FilterHeader
+import com.faithdeveloper.explore.models.Filter
 import com.faithdeveloper.explore.util.FilterInterface
 import com.faithdeveloper.explore.util.Utils.CONTINENT
-import com.faithdeveloper.explore.util.Utils.PARENT
-import com.faithdeveloper.explore.util.Utils.REGION_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.CONTINENT_QUERY_TYPE
 import com.faithdeveloper.explore.util.Utils.TIME_ZONE
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class FilterBottomSheet() : BottomSheetDialogFragment() {
+    private lateinit var filterType: String
     private lateinit var filterInterface: FilterInterface
     private var _binding: FilterLayoutBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: FilterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(savedInstanceState != null) {
+            filterType = savedInstanceState.getString(FILTER_TYPE)!!
+        }
         createAdapter()
         super.onCreate(savedInstanceState)
     }
@@ -40,11 +41,11 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.filter.text = filterType
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.recycler.layoutManager = layoutManager
         binding.recycler.adapter = adapter
-        reset()
         showResults()
         close()
         super.onViewCreated(view, savedInstanceState)
@@ -64,38 +65,20 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
     }
 
     private fun createAdapter() {
-        val headers = resources.getStringArray(R.array.filter_headers)
-        val listOfHeaders = mutableListOf<FilterHeader>()
-
-        val mutableListOfContinents = mutableListOf<FilterGrandChild>()
-        resources.getStringArray(R.array.continents).forEach {
-            mutableListOfContinents.add(FilterGrandChild(it, false))
-        }
-        val mutableListOfTimeZones = mutableListOf<FilterGrandChild>()
-        resources.getStringArray(R.array.time_zones).toMutableList().forEach {
-            mutableListOfTimeZones.add(FilterGrandChild(it, false))
-        }
-
-        val mapOfChildren = mapOf(
-            CONTINENT to FilterChild(
-                CONTINENT, mutableListOfContinents
-            ),
-            TIME_ZONE to FilterChild(
-                TIME_ZONE, mutableListOfTimeZones
-            )
+        adapter = FilterAdapter(
+            when (filterType) {
+                CONTINENT -> formatAdapterData(resources.getStringArray(R.array.continents))
+                else -> formatAdapterData(resources.getStringArray(R.array.time_zones))
+            }
         )
-        headers.onEach {
-            listOfHeaders.add(
-                FilterHeader(it, PARENT, mapOfChildren[it]!!)
-            )
-        }
-        adapter = FilterAdapter(listOfHeaders, mutableListOfContinents.size + 2)
     }
 
-    private fun reset() {
-        binding.reset.setOnClickListener {
-            adapter.reset()
+    private fun formatAdapterData(array: Array<String>): MutableList<Filter> {
+        val list = mutableListOf<Filter>()
+        array.forEach {
+            list.add(Filter(it, false))
         }
+        return list
     }
 
     private fun showResults() {
@@ -106,13 +89,13 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
                 ), Toast.LENGTH_SHORT
             ).show()
             else {
-                val filterChild = adapter.getChosenChild()
-                when (filterChild.type) {
+                val filter = adapter.getFilter()
+                when (filterType) {
                     CONTINENT -> filterInterface.filter(
-                        filterChild.data.first().title,
-                        REGION_QUERY_TYPE
+                        filter,
+                        CONTINENT_QUERY_TYPE
                     )
-                    TIME_ZONE -> filterInterface.filter(filterChild.data.first().title, TIME_ZONE)
+                    TIME_ZONE -> filterInterface.filter(filter, TIME_ZONE)
                 }
                 dismiss()
             }
@@ -125,10 +108,18 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(FILTER_TYPE, filterType)
+        super.onSaveInstanceState(outState)
+    }
+
     companion object {
-        fun instance(filterInterface: FilterInterface): FilterBottomSheet {
+        const val FILTER_TYPE = "filter_type"
+        const val FILTER_INTERFACE = "filer_interface"
+        fun instance(filterInterface: FilterInterface, filterType: String): FilterBottomSheet {
             return FilterBottomSheet().apply {
                 this.filterInterface = filterInterface
+                this.filterType = filterType
             }
         }
 

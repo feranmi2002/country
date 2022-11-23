@@ -1,6 +1,7 @@
 package com.faithdeveloper.explore.fragments
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -24,8 +26,11 @@ import com.faithdeveloper.explore.paging.ExplorePager
 import com.faithdeveloper.explore.retrofit.ApiHelper
 import com.faithdeveloper.explore.retrofit.ServiceBuilder
 import com.faithdeveloper.explore.util.FilterInterface
+import com.faithdeveloper.explore.util.Utils.CONTINENT
 import com.faithdeveloper.explore.util.Utils.NAME_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.TIME_ZONE
 import com.faithdeveloper.explore.viewmodels.ExploreViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.intro_screen.*
 import kotlinx.coroutines.launch
 
@@ -121,22 +126,39 @@ class MainFragment : Fragment(), FilterInterface {
 
     private fun filter() {
         binding.filter.setOnClickListener {
-            openBottomSheetDialog("filter")
+            openOptionDialogs()
         }
     }
 
     private fun language() {
         binding.languageChooser.setOnClickListener {
-            openBottomSheetDialog("langauge")
+           LanguageBottomSheet.instance(this).show(requireActivity().supportFragmentManager, LanguageBottomSheet.TAG)
         }
     }
 
-    private fun openBottomSheetDialog(type: String) {
-        val bottomSheet = when (type) {
-            "filter" -> FilterBottomSheet.instance(this)
-            else -> LanguageBottomSheet.instance(this)
+    private fun openOptionDialogs() {
+        val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
+        var dialog:AlertDialog? = null
+        dialogBuilder.apply {
+            setTitle(getString(R.string.filter_by))
+            setMultiChoiceItems(
+                resources.getStringArray(R.array.filter_headers),
+                null
+            ) { _, p1, _ ->
+                if (p1 == 0) FilterBottomSheet.instance(this@MainFragment, CONTINENT).show(requireActivity().supportFragmentManager, FilterBottomSheet.TAG)
+                else FilterBottomSheet.instance(this@MainFragment, TIME_ZONE).show(requireActivity().supportFragmentManager, FilterBottomSheet.TAG)
+                dialog?.cancel()
+            }
+            setCancelable(true)
+            setNegativeButton(getString(R.string.cancel), object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+//                     do nothing
+                }
+            })
         }
-        bottomSheet.show(requireActivity().supportFragmentManager, FilterBottomSheet.TAG)
+        dialog = dialogBuilder.create()
+        dialog.show()
+
     }
 
     private fun darkOrLightMode() {

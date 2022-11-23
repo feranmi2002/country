@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/languages"
+        android:id="@+id/filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="24dp"
@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/languages_clear_background"
         android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toBottomOf="@id/languages"
+        app:layout_constraintBottom_toBottomOf="@id/filter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/languages"
+        app:layout_constraintTop_toTopOf="@id/filter"
         app:srcCompat="@drawable/ic_baseline_clear_24" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -34,29 +34,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
-        app:layout_constraintBottom_toTopOf="@id/reset"
-        app:layout_constraintTop_toBottomOf="@id/languages"
+        app:layout_constraintBottom_toTopOf="@id/show_result"
+        app:layout_constraintTop_toBottomOf="@id/filter"
         tools:listitem="@layout/languages_list_item" />
-
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reset"
-        android:id="@+id/reset"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_marginStart="24dp"
-        android:textAllCaps="false"
-        android:layout_marginBottom="24dp"
-        android:textColor="#F2F4F7"
-        app:strokeColor="#F2F4F7"/>
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/show_result"
-        app:layout_constraintStart_toEndOf="@id/reset"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="24dp"

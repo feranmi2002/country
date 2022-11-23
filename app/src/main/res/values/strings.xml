@@ -17,6 +17,10 @@
     <string name="an_error_occurred">An error occurred</string>
     <string name="emoty_search_keyword">Enter a country</string>
     <string name="no_result_found">No results Found</string>
+    <string name="cancel">Cancel</string>
+    <string name="timezone">Time Zone</string>
+    <string name="continent">Continent</string>
+    <string name="filter_by">Filter By</string>
 
 
 </resources>
