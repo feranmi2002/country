@@ -56,7 +56,7 @@ class DetailsFragment : Fragment() {
             mottoHeader.text = htmlFormat("Motto", data.motto)
             independence.text = htmlFormat("Independent", data.independent.toString())
             unMember.text = htmlFormat("UN Member", data.unMember.toString())
-            subRegion.text = htmlFormat("Sub Region", data.subRegion)
+            subRegion.text = htmlFormat("Sub Region", data.subregion)
             landlocked.text = htmlFormat("Landlocked", data.landlocked.toString())
             startOfWeek.text = htmlFormat("Start Of The Week", data.startOfWeek)
             latitude.text = htmlFormat("Latitude", data.latlng[0].toString())
