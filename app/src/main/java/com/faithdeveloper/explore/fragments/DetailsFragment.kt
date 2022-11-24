@@ -45,32 +45,31 @@ class DetailsFragment : Fragment() {
     }
 
     private fun presentData() {
-        binding.country.text = data.name.official
-        binding.regionHeader.text =
-            Html.fromHtml("<b>Region: </b>${data.region}", Html.FROM_HTML_MODE_COMPACT)
-        if (data.capital.isNotEmpty()) {
-            binding.capitalHeader.text =
-                Html.fromHtml("<b>Capital: </b>${data.capital.first()}", Html.FROM_HTML_MODE_COMPACT)
+        binding.apply {
+            country.text = data.name.official
+            regionHeader.text = htmlFormat("Region", data.region)
+            capitalHeader.text = htmlFormat("Capital", formatListOfStrings(data.capital))
+            timeZone.text = htmlFormat("Time Zone(s)", formatListOfStrings(data.timezones))
+            officialLanguageHeader.text = htmlFormat("Language", data.languages.language)
+            area.text = htmlFormat("Area", data.area.toString())
+            currency.text = htmlFormat("Currency", data.currencies.shortName.name)
+            mottoHeader.text = htmlFormat("Motto", data.motto)
+            independence.text = htmlFormat("Independent", data.independent.toString())
+            unMember.text = htmlFormat("UN Member", data.unMember.toString())
+            subRegion.text = htmlFormat("Sub Region", data.subRegion)
+            landlocked.text = htmlFormat("Landlocked", data.landlocked.toString())
+            startOfWeek.text = htmlFormat("Start Of The Week", data.startOfWeek)
+            latitude.text = htmlFormat("Latitude", data.latlng[0].toString())
+            longitude.text = htmlFormat("Longitude", data.latlng[1].toString())
+            googleMaps.text = htmlFormat("Google Map", data.maps.googleMaps)
+            openStreetMap.text = htmlFormat("Open Street Map", data.maps.openStreetMaps)
+            drivingSide.text = htmlFormat("Driving Side", data.car.side)
         }
-        binding.timeZone.text = Html.fromHtml(
-            "<b>Time Zone: </b> ${formatListOfStrings(data.timezones)}",
-            Html.FROM_HTML_MODE_COMPACT
-        )
-        binding.officialLanguageHeader.text =
-            Html.fromHtml("<b>Language:  </b>${data.languages.language}", Html.FROM_HTML_MODE_COMPACT)
-        binding.area.text =
-            Html.fromHtml("<b>Area: </b> ${data.area.toString()}", Html.FROM_HTML_MODE_COMPACT)
-        binding.currency.text = Html.fromHtml(
-            "<b>Currency: </b>${data.currencies.shortName.name} (${data.currencies.shortName.symbol})",
-            Html.FROM_HTML_MODE_COMPACT
-        )
-        binding.mottoHeader.text =
-            Html.fromHtml("<b>Motto: </b> ${data.motto}", Html.FROM_HTML_MODE_COMPACT)
-        binding.independence.text = Html.fromHtml(
-            "<b>Independent: </b>${data.independent}",
-            Html.FROM_HTML_MODE_COMPACT
-        )
+
     }
+
+    private fun htmlFormat(header: String, item: String) =
+        Html.fromHtml("<b>$header: </b> $item", Html.FROM_HTML_MODE_COMPACT)
 
     private fun formatListOfStrings(timezones: List<String>): String {
         var string = ""

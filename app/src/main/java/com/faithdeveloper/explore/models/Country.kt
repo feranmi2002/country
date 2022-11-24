@@ -16,8 +16,15 @@ data class Country(
     val flags: Image,
     val timezones: List<String>,
     val coatOfArms: Image,
-    val type:String,
-    val separatorText:String
+    val unMember:Boolean,
+    val subregion:String,
+    val latlng:List<Double>,
+    val landlocked:Boolean,
+    val maps:Maps,
+    val startOfWeek:String,
+    val car:Drive
+
+
 ) : Parcelable {
     constructor() : this(
         Name(),
@@ -31,7 +38,12 @@ data class Country(
         Image(),
         mutableListOf(),
         Image(),
+        false,
         "",
-        ""
+        listOf(),
+        false,
+        Maps(),
+        "",
+        Drive()
     )
 }
