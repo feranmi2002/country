@@ -53,7 +53,7 @@ class ExplorePagingSource(
             val result = if (params.key == 1) {
                 when {
                     response.size >= 9 -> {
-                        response.slice(IntRange(0, 19))
+                        response.slice(IntRange(0, 9))
                     }
                     else -> {
                         val list = mutableListOf<Country>()
@@ -68,7 +68,7 @@ class ExplorePagingSource(
                 )
             )
             val currentKey = params.key
-            val nextKey = if (result.size < 20) {
+            val nextKey = if (result.size < 10) {
                 null
             } else if (params.key != null) {
                 currentKey?.plus(1)
