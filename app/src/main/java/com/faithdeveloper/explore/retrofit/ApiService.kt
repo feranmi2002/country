@@ -23,4 +23,20 @@ interface ApiService {
     suspend fun getByContinent(
         @Path("region") continent:String
     ):List<Country>
+
+    @GET("currency/{currency}")
+    suspend fun getByCurrency(
+        @Path("currency") currency:String
+    ):List<Country>
+
+    @GET("capital/{capital}")
+    suspend fun getByCapital(
+        @Path("capital") capital:String
+    ):List<Country>
+
+    @GET("demonym/{demonym}")
+    suspend fun getByDemonym(
+        @Path("demonym") demonym:String
+    ):List<Country>
+
 }

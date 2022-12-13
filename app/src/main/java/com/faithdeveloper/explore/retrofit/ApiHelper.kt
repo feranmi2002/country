@@ -18,4 +18,14 @@ class ApiHelper(private val apiService: ApiService) {
         return apiService.getByLanguage(language)
     }
 
+    suspend fun getByCurrency(currency:String):List<Country>{
+        return apiService.getByCurrency(currency)
+    }
+    suspend fun getByCapital(capital:String):List<Country>{
+        return apiService.getByCapital(capital)
+    }
+    suspend fun getByDemonym(demonymn:String):List<Country>{
+        return apiService.getByDemonym(demonymn)
+    }
+
 }

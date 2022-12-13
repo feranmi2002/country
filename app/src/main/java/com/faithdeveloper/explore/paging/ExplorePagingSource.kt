@@ -6,14 +6,20 @@ import com.faithdeveloper.explore.models.Country
 import com.faithdeveloper.explore.retrofit.ApiHelper
 import com.faithdeveloper.explore.retrofit.Repository
 import com.faithdeveloper.explore.util.Utils
+import com.faithdeveloper.explore.util.Utils.CAPITAL_QUERY_TYPE
 import com.faithdeveloper.explore.util.Utils.LANGUAGE_QUERY_TYPE
-import com.faithdeveloper.explore.util.Utils.NAME_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.COUNTRY_QUERY_TYPE
 import com.faithdeveloper.explore.util.Utils.CONTINENT_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.CURRENCY_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.DEMONYM_QUERY_TYPE
+import com.faithdeveloper.explore.util.ViewModel_PagingSource_Interface
+import java.util.*
 
 class ExplorePagingSource(
     private val apiHelper: ApiHelper,
-    private var query: String?,
-    private var queryType: String?,
+    private val query: String?,
+    private val queryType: String,
+    private val viewModelPagingSourceInterface: ViewModel_PagingSource_Interface
 ) :
     PagingSource<Int, Country>() {
     private var response: List<Country> = listOf()
@@ -25,21 +31,39 @@ class ExplorePagingSource(
                 if (response.isEmpty()) {
                     if (params.key == 1) {
                         response = when (queryType) {
-                            NAME_QUERY_TYPE -> Utils.sortAlphabetically(
+                            COUNTRY_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByName(
-                                    query!!,
+                                    query!!.lowercase(Locale.getDefault()),
                                     apiHelper
                                 )
                             )
                             CONTINENT_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByRegion(
-                                    query!!,
+                                    query!!.lowercase(Locale.getDefault()),
                                     apiHelper
                                 )
                             )
                             LANGUAGE_QUERY_TYPE -> Utils.sortAlphabetically(
-                                Repository.getByRegion(
-                                    query!!,
+                                Repository.getByLanguage(
+                                    query!!.lowercase(Locale.getDefault()),
+                                    apiHelper
+                                )
+                            )
+                            CURRENCY_QUERY_TYPE -> Utils.sortAlphabetically(
+                                Repository.getByCurrency(
+                                    query!!.lowercase(Locale.getDefault()),
+                                    apiHelper
+                                )
+                            )
+                            CAPITAL_QUERY_TYPE -> Utils.sortAlphabetically(
+                                Repository.getByCapital(
+                                    query!!.lowercase(Locale.getDefault()),
+                                    apiHelper
+                                )
+                            )
+                            DEMONYM_QUERY_TYPE -> Utils.sortAlphabetically(
+                                Repository.getByDemonymn(
+                                    query!!.lowercase(Locale.getDefault()),
                                     apiHelper
                                 )
                             )
@@ -49,6 +73,8 @@ class ExplorePagingSource(
                 }
             } catch (e: retrofit2.HttpException) {
                 if (e.code() != 404) throw e
+            } finally {
+                viewModelPagingSourceInterface.getResponseSize(response.size)
             }
             val result = if (params.key == 1) {
                 when {

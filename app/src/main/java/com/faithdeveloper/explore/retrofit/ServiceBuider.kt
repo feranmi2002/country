@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ServiceBuilder {
 
     // base url
-    private const val baseUrl = "https://restcountries.com/v3.1/"
+    private const val BASE_URL = "https://restcountries.com/v3.1/"
 
     private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     private val okHttp = OkHttpClient.Builder().addInterceptor(logger)
@@ -20,11 +20,11 @@ object ServiceBuilder {
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttp.build())
             .build()
     }
 
-    val apiService = getRetrofit().create(ApiService::class.java)
+    val apiService: ApiService = getRetrofit().create(ApiService::class.java)
 }
