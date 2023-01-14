@@ -26,13 +26,19 @@ import com.faithdeveloper.explore.paging.ExplorePager
 import com.faithdeveloper.explore.retrofit.ApiHelper
 import com.faithdeveloper.explore.retrofit.ServiceBuilder
 import com.faithdeveloper.explore.util.FilterInterface
-import com.faithdeveloper.explore.util.Utils.CONTINENT
-import com.faithdeveloper.explore.util.Utils.NAME_QUERY_TYPE
-import com.faithdeveloper.explore.util.Utils.TIME_ZONE
+import com.faithdeveloper.explore.util.Utils.ALL_COUNTRIES_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.CAPITAL_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.CONTINENT_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.COUNTRY_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.CURRENCY_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.DEMONYM_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.LANGUAGE_QUERY_TYPE
 import com.faithdeveloper.explore.viewmodels.ExploreViewModel
+import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.intro_screen.*
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainFragment : Fragment(), FilterInterface {
     private var _binding: IntroScreenBinding? = null
@@ -46,8 +52,25 @@ class MainFragment : Fragment(), FilterInterface {
             )
         )
     }
+    private lateinit var autoCompleteResources: Map<String, Array<String>>
+    private lateinit var infoResources: Map<String, String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        autoCompleteResources = mapOf<String, Array<String>>(
+            COUNTRY_QUERY_TYPE to Locale.getISOCountries(),
+            CONTINENT_QUERY_TYPE to resources.getStringArray(R.array.continents),
+            LANGUAGE_QUERY_TYPE to Locale.getISOLanguages(),
+            CURRENCY_QUERY_TYPE to resources.getStringArray(R.array.currencies),
+            CAPITAL_QUERY_TYPE to resources.getStringArray(R.array.capitals),
+            DEMONYM_QUERY_TYPE to resources.getStringArray(R.array.demonyms),
+        )
+        infoResources = mapOf<String, String>(
+            CONTINENT_QUERY_TYPE to resources.getString(R.string.continents_info),
+            LANGUAGE_QUERY_TYPE to resources.getString(R.string.language_info),
+            CURRENCY_QUERY_TYPE to resources.getString(R.string.currency_info),
+            COUNTRY_QUERY_TYPE to resources.getString(R.string.countries_info),
+            CAPITAL_QUERY_TYPE to resources.getString(R.string.capital_info)
+        )
         setUpAdapter()
         super.onCreate(savedInstanceState)
     }
@@ -65,12 +88,31 @@ class MainFragment : Fragment(), FilterInterface {
         setUpRecycler()
         setUpLoadState()
         search()
+        loadChips()
         language()
-        filter()
         observer()
         retry()
         darkOrLightMode()
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun loadChips() {
+        val chipData = resources.getTextArray(R.array.chips)
+        binding.chipGroup.apply {
+            setOnCheckedStateChangeListener { group, checkedIds ->
+                val chip: Chip? = group.findViewById(checkedIds[0])
+                viewModel.queryTypeCache = chip?.text as String
+                binding.searchCountry.setSimpleItems(autoCompleteResources[chip.text as String]!!)
+                binding.searchCountry.requestFocus()
+            }
+            chipData.forEachIndexed { index, charSequence ->
+                val chip =
+                    layoutInflater.inflate(R.layout.chip_single, binding.chipGroup, false) as Chip
+                chip.text = charSequence
+                chip.isChecked = charSequence == viewModel.queryTypeCache
+                addView(chip)
+            }
+        }
     }
 
     private fun setUpRecycler() {
@@ -86,11 +128,6 @@ class MainFragment : Fragment(), FilterInterface {
         }
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-
     private fun search() {
         binding.searchCountry.setOnEditorActionListener { textView, actionId, keyEvent ->
             return@setOnEditorActionListener when (actionId) {
@@ -99,12 +136,11 @@ class MainFragment : Fragment(), FilterInterface {
                         hideKeyboard(binding.root)
                         pagerAdapterExternallyMadeEmpty = true
                         pagerAdapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
-                        viewModel.queryType = NAME_QUERY_TYPE
                         viewModel.query.value = binding.searchCountry.text.toString().trim()
                     } else {
                         Toast.makeText(
                             requireContext(),
-                            getString(R.string.emoty_search_keyword),
+                            getString(R.string.empty_search_keyword),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -124,29 +160,27 @@ class MainFragment : Fragment(), FilterInterface {
         )
     }
 
-    private fun filter() {
-        binding.filter.setOnClickListener {
-            openOptionDialogs()
-        }
-    }
 
     private fun language() {
         binding.languageChooser.setOnClickListener {
-           LanguageBottomSheet.instance(this).show(requireActivity().supportFragmentManager, LanguageBottomSheet.TAG)
+            LanguageBottomSheet.instance(this)
+                .show(requireActivity().supportFragmentManager, LanguageBottomSheet.TAG)
         }
     }
 
     private fun openOptionDialogs() {
         val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
-        var dialog:AlertDialog? = null
+        var dialog: AlertDialog? = null
         dialogBuilder.apply {
             setTitle(getString(R.string.filter_by))
             setMultiChoiceItems(
                 resources.getStringArray(R.array.filter_headers),
                 null
             ) { _, p1, _ ->
-                if (p1 == 0) FilterBottomSheet.instance(this@MainFragment, CONTINENT).show(requireActivity().supportFragmentManager, FilterBottomSheet.TAG)
-                else FilterBottomSheet.instance(this@MainFragment, TIME_ZONE).show(requireActivity().supportFragmentManager, FilterBottomSheet.TAG)
+                if (p1 == 0) FilterBottomSheet.instance(this@MainFragment, CONTINENT_QUERY_TYPE)
+                    .show(requireActivity().supportFragmentManager, FilterBottomSheet.TAG)
+                else FilterBottomSheet.instance(this@MainFragment, "TIME_ZONE_QUERY_TYPE")
+                    .show(requireActivity().supportFragmentManager, FilterBottomSheet.TAG)
                 dialog?.cancel()
             }
             setCancelable(true)
@@ -206,8 +240,8 @@ class MainFragment : Fragment(), FilterInterface {
                     recycler.isVisible = false
                     if (!pagerAdapterExternallyMadeEmpty) {
                         binding.feedBack.emptyResult.isVisible = true
-                    }
 
+                    }
                 } else {
                     binding.feedBack.emptyResult.isVisible = false
                     pagerAdapterExternallyMadeEmpty = false
@@ -216,11 +250,16 @@ class MainFragment : Fragment(), FilterInterface {
                 binding.recycler.isVisible =
                     !(loadState.refresh is LoadState.Loading || loadState.refresh is LoadState.Error)
 
+//                hide info on error or on loading
+                binding.info.isVisible =
+                    !(loadState.refresh is LoadState.Loading || loadState.refresh is LoadState.Error)
+
                 //show loading spinner during initial load or refresh
                 binding.feedBack.progressCircular.isVisible =
                     loadState.refresh is LoadState.Loading
 
-                enableOrDisableViewsBasedOnLoadState(loadState.refresh is LoadState.Loading)
+
+                enableOrDisableTouchableViewsBasedOnLoadState(loadState.refresh is LoadState.Loading)
 
                 // show error info
                 binding.feedBack.info.isVisible =
@@ -228,19 +267,28 @@ class MainFragment : Fragment(), FilterInterface {
                 binding.feedBack.buttonRetry.isVisible =
                     loadState.refresh is LoadState.Error && pagerAdapter.itemCount == 0
 
-//                how recycler on data loaded
-                if (loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount > 0) {
-                    binding.recycler.isVisible = true
-                }
-
+//                show recycler on data loaded
+                binding.info.isVisible =
+                    loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount > 0
+                binding.recycler.isVisible =
+                    loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount > 0
+                binding.info.text = infoResources[viewModel.queryType]?.format(
+                    Locale.getDefault(),
+                    viewModel.query.value,
+                    viewModel.responseSize
+                )
             }
         }
     }
 
-    private fun enableOrDisableViewsBasedOnLoadState(isLoading: Boolean) {
+    private fun enableOrDisableTouchableViewsBasedOnLoadState(isLoading: Boolean) {
         binding.lightDarkMode.isEnabled = !isLoading
+        binding.chipGroup.isEnabled = !isLoading
         binding.languageChooser.isEnabled = !isLoading
-        binding.filter.isEnabled = !isLoading
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 }

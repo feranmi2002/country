@@ -67,7 +67,8 @@ class ExplorePagingSource(
                                     apiHelper
                                 )
                             )
-                            else -> Utils.sortAlphabetically(Repository.getAllCountries(apiHelper))
+                            else -> Utils.sortAlphabetically(listOf())
+//                                Utils.sortAlphabetically(Repository.getAllCountries(apiHelper))
                         }
                     }
                 }

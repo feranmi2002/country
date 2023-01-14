@@ -11,12 +11,10 @@ import com.faithdeveloper.explore.adapters.FilterAdapter
 import com.faithdeveloper.explore.databinding.FilterLayoutBinding
 import com.faithdeveloper.explore.models.Filter
 import com.faithdeveloper.explore.util.FilterInterface
-import com.faithdeveloper.explore.util.Utils.CONTINENT
 import com.faithdeveloper.explore.util.Utils.CONTINENT_QUERY_TYPE
-import com.faithdeveloper.explore.util.Utils.TIME_ZONE
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class FilterBottomSheet() : BottomSheetDialogFragment() {
+class FilterBottomSheet(val _filterInterface:FilterInterface) : BottomSheetDialogFragment() {
     private lateinit var filterType: String
     private lateinit var filterInterface: FilterInterface
     private var _binding: FilterLayoutBinding? = null
@@ -27,6 +25,7 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
         if(savedInstanceState != null) {
             filterType = savedInstanceState.getString(FILTER_TYPE)!!
         }
+        filterInterface = _filterInterface
         createAdapter()
         super.onCreate(savedInstanceState)
     }
@@ -67,8 +66,8 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
     private fun createAdapter() {
         adapter = FilterAdapter(
             when (filterType) {
-                CONTINENT -> formatAdapterData(resources.getStringArray(R.array.continents))
-                else -> formatAdapterData(resources.getStringArray(R.array.time_zones))
+                CONTINENT_QUERY_TYPE -> formatAdapterData(resources.getStringArray(R.array.continents))
+                else -> formatAdapterData(resources.getStringArray(R.array.continents))
             }
         )
     }
@@ -91,11 +90,10 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
             else {
                 val filter = adapter.getFilter()
                 when (filterType) {
-                    CONTINENT -> filterInterface.filter(
+                    CONTINENT_QUERY_TYPE -> filterInterface.filter(
                         filter,
                         CONTINENT_QUERY_TYPE
                     )
-                    TIME_ZONE -> filterInterface.filter(filter, TIME_ZONE)
                 }
                 dismiss()
             }
@@ -117,8 +115,7 @@ class FilterBottomSheet() : BottomSheetDialogFragment() {
         const val FILTER_TYPE = "filter_type"
         const val FILTER_INTERFACE = "filer_interface"
         fun instance(filterInterface: FilterInterface, filterType: String): FilterBottomSheet {
-            return FilterBottomSheet().apply {
-                this.filterInterface = filterInterface
+            return FilterBottomSheet(filterInterface).apply {
                 this.filterType = filterType
             }
         }

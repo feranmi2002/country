@@ -14,6 +14,7 @@ class ExploreViewModel(private val apiHelper: ApiHelper) : ViewModel(), ViewMode
     val query = MutableLiveData<String>(null)
     var queryType: String = ALL_COUNTRIES_QUERY_TYPE
     private val _result = query.switchMap {
+        queryType = queryTypeCache
         request(it, queryType)
             .liveData
             .cachedIn(viewModelScope)
@@ -22,6 +23,7 @@ class ExploreViewModel(private val apiHelper: ApiHelper) : ViewModel(), ViewMode
     private var _responseSize = 0
     val responseSize get() = _responseSize
 
+    var queryTypeCache:String = ALL_COUNTRIES_QUERY_TYPE
     private fun request(query: String?, queryType: String) = Pager(
         config = PagingConfig(pageSize = 10), pagingSourceFactory = {
             ExplorePagingSource(apiHelper, query, queryType,this)
