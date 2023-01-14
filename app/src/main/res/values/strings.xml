@@ -15,12 +15,18 @@
     <string name="choose_filters">You haven\'t chosen any Filters.</string>
     <string name="retry">RETRY</string>
     <string name="an_error_occurred">An error occurred</string>
-    <string name="emoty_search_keyword">Enter a country</string>
+    <string name="empty_search_keyword">Enter search text</string>
     <string name="no_result_found">No results Found</string>
     <string name="cancel">Cancel</string>
     <string name="timezone">Time Zone</string>
     <string name="continent">Continent</string>
     <string name="filter_by">Filter By</string>
+    <string name="continents_info">Here are countries in %1s - %1d results</string>
+    <string name="currency_info">Here are countries that spend %1s - %1d result(s) </string>
+    <string name="language_info">Here are countries that speak %1s - %1d result(s)</string>
+    <string name="time_zone_info">Here are countries in the %1s timezone - %1d result(s)</string>
+    <string name="countries_info">Here are countries that contain %1s - %1d result(s)</string>
+    <string name="capital_info">Here are countries with capital %1s - %1d result(s)</string>
 
 
 

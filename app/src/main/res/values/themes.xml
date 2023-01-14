@@ -17,7 +17,7 @@
     </style>
 
     <style name="CurvedCorners" parent="">
-        <item name="cornerSize">20%</item>
+        <item name="cornerSize">10%</item>
     </style>
 
 
