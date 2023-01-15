@@ -179,6 +179,7 @@
     <string-array name="chips">
         <item>Country</item>
         <item>Continent</item>
+        <item>Sub-Continent</item>
         <item>Currency</item>
         <item>Language</item>
         <item>Capital</item>

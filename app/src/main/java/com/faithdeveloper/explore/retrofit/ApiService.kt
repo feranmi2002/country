@@ -39,4 +39,9 @@ interface ApiService {
         @Path("demonym") demonym:String
     ):List<Country>
 
+    @GET("subregion/{region}")
+    suspend fun getBySubContinent(
+        @Path("region") region:String
+    ):List<Country>
+
 }

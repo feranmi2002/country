@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,6 +27,7 @@ import com.faithdeveloper.explore.paging.ExplorePager
 import com.faithdeveloper.explore.retrofit.ApiHelper
 import com.faithdeveloper.explore.retrofit.ServiceBuilder
 import com.faithdeveloper.explore.util.FilterInterface
+import com.faithdeveloper.explore.util.Utils
 import com.faithdeveloper.explore.util.Utils.ALL_COUNTRIES_QUERY_TYPE
 import com.faithdeveloper.explore.util.Utils.CAPITAL_QUERY_TYPE
 import com.faithdeveloper.explore.util.Utils.CONTINENT_QUERY_TYPE
@@ -52,25 +54,9 @@ class MainFragment : Fragment(), FilterInterface {
             )
         )
     }
-    private lateinit var autoCompleteResources: Map<String, Array<String>>
-    private lateinit var infoResources: Map<String, String>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        autoCompleteResources = mapOf<String, Array<String>>(
-            COUNTRY_QUERY_TYPE to Locale.getISOCountries(),
-            CONTINENT_QUERY_TYPE to resources.getStringArray(R.array.continents),
-            LANGUAGE_QUERY_TYPE to Locale.getISOLanguages(),
-            CURRENCY_QUERY_TYPE to resources.getStringArray(R.array.currencies),
-            CAPITAL_QUERY_TYPE to resources.getStringArray(R.array.capitals),
-            DEMONYM_QUERY_TYPE to resources.getStringArray(R.array.demonyms),
-        )
-        infoResources = mapOf<String, String>(
-            CONTINENT_QUERY_TYPE to resources.getString(R.string.continents_info),
-            LANGUAGE_QUERY_TYPE to resources.getString(R.string.language_info),
-            CURRENCY_QUERY_TYPE to resources.getString(R.string.currency_info),
-            COUNTRY_QUERY_TYPE to resources.getString(R.string.countries_info),
-            CAPITAL_QUERY_TYPE to resources.getString(R.string.capital_info)
-        )
         setUpAdapter()
         super.onCreate(savedInstanceState)
     }
@@ -100,10 +86,14 @@ class MainFragment : Fragment(), FilterInterface {
         val chipData = resources.getTextArray(R.array.chips)
         binding.chipGroup.apply {
             setOnCheckedStateChangeListener { group, checkedIds ->
-                val chip: Chip? = group.findViewById(checkedIds[0])
-                viewModel.queryTypeCache = chip?.text as String
-                binding.searchCountry.setSimpleItems(autoCompleteResources[chip.text as String]!!)
-                binding.searchCountry.requestFocus()
+                if(checkedIds.size > 0) {
+                    val chip: Chip? = group.findViewById(checkedIds[0])
+                    viewModel.queryTypeCache = chip?.text as String
+                    //               binding.searchCountry.setSimpleItems(autoCompleteResources[chip.text as String]!!)
+                    binding.searchCountry.requestFocus()
+                    Utils.showKeyboard(binding.root, requireContext())
+                }
+
             }
             chipData.forEachIndexed { index, charSequence ->
                 val chip =
@@ -111,6 +101,11 @@ class MainFragment : Fragment(), FilterInterface {
                 chip.text = charSequence
                 chip.isChecked = charSequence == viewModel.queryTypeCache
                 addView(chip)
+                chip.setOnClickListener {
+                    if (binding.searchCountry.text.isNotBlank()) {
+                        request()
+                    }
+                }
             }
         }
     }
@@ -133,10 +128,10 @@ class MainFragment : Fragment(), FilterInterface {
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
                     if (binding.searchCountry.text!!.isNotBlank()) {
-                        hideKeyboard(binding.root)
-                        pagerAdapterExternallyMadeEmpty = true
-                        pagerAdapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
-                        viewModel.query.value = binding.searchCountry.text.toString().trim()
+                        if (binding.chipGroup.checkedChipIds.size == 0) {
+                            binding.chipGroup.check(binding.chipGroup[0].id)
+                        }
+                        request()
                     } else {
                         Toast.makeText(
                             requireContext(),
@@ -151,15 +146,12 @@ class MainFragment : Fragment(), FilterInterface {
         }
     }
 
-    private fun hideKeyboard(rootView: View) {
-        val inputMethodManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(
-            rootView.windowToken,
-            InputMethodManager.RESULT_UNCHANGED_SHOWN
-        )
+    private fun request() {
+        Utils.hideKeyboard(binding.root, requireContext())
+        pagerAdapterExternallyMadeEmpty = true
+        pagerAdapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
+        viewModel.query.value = binding.searchCountry.text.toString().trim()
     }
-
 
     private fun language() {
         binding.languageChooser.setOnClickListener {
@@ -238,11 +230,18 @@ class MainFragment : Fragment(), FilterInterface {
                 // show empty list
                 if (loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached && pagerAdapter.itemCount < 1) {
                     recycler.isVisible = false
+
+//                    empty list caused by new search
                     if (!pagerAdapterExternallyMadeEmpty) {
                         binding.feedBack.emptyResult.isVisible = true
 
                     }
-                } else {
+                }
+//                empty list caused by empty result
+                else {
+                    binding.feedBack.emptyResult.text =
+                        Utils.emptyResultFeedback(requireContext(), viewModel.queryType).format(
+                            Locale.getDefault(), viewModel.query.value)
                     binding.feedBack.emptyResult.isVisible = false
                     pagerAdapterExternallyMadeEmpty = false
                 }
@@ -262,7 +261,7 @@ class MainFragment : Fragment(), FilterInterface {
                 enableOrDisableTouchableViewsBasedOnLoadState(loadState.refresh is LoadState.Loading)
 
                 // show error info
-                binding.feedBack.info.isVisible =
+                binding.feedBack.error.isVisible =
                     loadState.refresh is LoadState.Error && pagerAdapter.itemCount == 0
                 binding.feedBack.buttonRetry.isVisible =
                     loadState.refresh is LoadState.Error && pagerAdapter.itemCount == 0
@@ -272,11 +271,12 @@ class MainFragment : Fragment(), FilterInterface {
                     loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount > 0
                 binding.recycler.isVisible =
                     loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount > 0
-                binding.info.text = infoResources[viewModel.queryType]?.format(
-                    Locale.getDefault(),
-                    viewModel.query.value,
-                    viewModel.responseSize
-                )
+                binding.info.text =
+                    Utils.infoResource(requireContext(), viewModel.queryType).format(
+                        Locale.getDefault(),
+                        viewModel.query.value,
+                        viewModel.responseSize
+                    )
             }
         }
     }

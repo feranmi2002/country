@@ -9,8 +9,8 @@
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_circular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:indeterminate="true"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/button_retry"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/info"
+        android:id="@+id/error"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -36,7 +36,7 @@
         android:id="@+id/empty_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_result_found"
+        tools:text="@string/no_result_found"
         android:visibility="invisible"
         tools:visibility="visible"
         android:textSize="18sp"

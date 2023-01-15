@@ -23,5 +23,8 @@ object Repository {
     suspend fun getByDemonymn(demonymn: String, apiHelper: ApiHelper): List<Country> =
         apiHelper.getByDemonym(demonymn)
 
+    suspend fun getBySubContinent(subregion:String, apiHelper: ApiHelper): List<Country> =
+        apiHelper.getBySubContinent(subregion)
+
 
 }

@@ -27,5 +27,8 @@ class ApiHelper(private val apiService: ApiService) {
     suspend fun getByDemonym(demonymn:String):List<Country>{
         return apiService.getByDemonym(demonymn)
     }
+    suspend fun getBySubContinent(subregion:String):List<Country>{
+        return apiService.getBySubContinent(subregion)
+    }
 
 }

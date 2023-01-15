@@ -12,6 +12,7 @@ import com.faithdeveloper.explore.util.Utils.COUNTRY_QUERY_TYPE
 import com.faithdeveloper.explore.util.Utils.CONTINENT_QUERY_TYPE
 import com.faithdeveloper.explore.util.Utils.CURRENCY_QUERY_TYPE
 import com.faithdeveloper.explore.util.Utils.DEMONYM_QUERY_TYPE
+import com.faithdeveloper.explore.util.Utils.SUBCONTINENT_QUERY_TYPE
 import com.faithdeveloper.explore.util.ViewModel_PagingSource_Interface
 import java.util.*
 
@@ -33,37 +34,43 @@ class ExplorePagingSource(
                         response = when (queryType) {
                             COUNTRY_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByName(
-                                    query!!.lowercase(Locale.getDefault()),
+                                    query!!.lowercase(Locale.ENGLISH),
                                     apiHelper
                                 )
                             )
                             CONTINENT_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByRegion(
-                                    query!!.lowercase(Locale.getDefault()),
+                                    query!!.lowercase(Locale.ENGLISH),
                                     apiHelper
                                 )
                             )
                             LANGUAGE_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByLanguage(
-                                    query!!.lowercase(Locale.getDefault()),
+                                    query!!.lowercase(Locale.ENGLISH),
                                     apiHelper
                                 )
                             )
                             CURRENCY_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByCurrency(
-                                    query!!.lowercase(Locale.getDefault()),
+                                    query!!.lowercase(Locale.ENGLISH),
                                     apiHelper
                                 )
                             )
                             CAPITAL_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByCapital(
-                                    query!!.lowercase(Locale.getDefault()),
+                                    query!!.lowercase(Locale.ENGLISH),
                                     apiHelper
                                 )
                             )
                             DEMONYM_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByDemonymn(
-                                    query!!.lowercase(Locale.getDefault()),
+                                    query!!.lowercase(Locale.ENGLISH),
+                                    apiHelper
+                                )
+                            )
+                            SUBCONTINENT_QUERY_TYPE -> Utils.sortAlphabetically(
+                                Repository.getBySubContinent(
+                                    query!!.lowercase(Locale.ENGLISH),
                                     apiHelper
                                 )
                             )

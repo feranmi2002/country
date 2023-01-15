@@ -11,8 +11,8 @@ object ServiceBuilder {
     // base url
     private const val BASE_URL = "https://restcountries.com/v3.1/"
 
-    private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-    private val okHttp = OkHttpClient.Builder().addInterceptor(logger)
+   // private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    private val okHttp = OkHttpClient.Builder()
     private val gson = GsonBuilder()
         .setLenient()
         .create()
