@@ -102,7 +102,7 @@ class MainFragment : Fragment(), FilterInterface {
                 chip.isChecked = charSequence == viewModel.queryTypeCache
                 addView(chip)
                 chip.setOnClickListener {
-                    if (binding.searchCountry.text.isNotBlank()) {
+                    if (binding.searchCountry.text.isNotBlank() && this.checkedChipIds.size > 0) {
                         request()
                     }
                 }
