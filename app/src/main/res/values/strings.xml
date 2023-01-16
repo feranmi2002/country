@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Country</string>
-    <string name="search_country">Search Country</string>
+    <string name="search_country">Search</string>
     <string name="filter">Filter</string>
     <string name="en">EN</string>
     <string name="languages">Languages</string>
@@ -27,7 +27,7 @@
     <string name="countries_info">Here are countries that contain \' %1s \' - %1d result(s)</string>
     <string name="capital_info">Here are countries with capital that contains \' %1s \' - %1d result(s)</string>
     <string name="demonymn_info">Here are countries that have demonymn that contains \' %1s \' - %1d result(s)</string>
-    <string name="subcontinent_info">Here are countries in subcontinents that contains \'%1s \'</string>
+    <string name="subcontinent_info">Here are countries in subcontinents that contains \'%1s \' -%1d result(s)</string>
     <string name="continents_empty">There is no continent called \' %1s \'</string>
     <string name="language_empty">There is no language called \' %1s \'</string>
     <string name="currency_empty">There is no currency called \' %1s \'</string>
