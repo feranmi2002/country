@@ -62,8 +62,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="20dp">
-
+            android:nestedScrollingEnabled="true">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
@@ -72,194 +71,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/pictures_item" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/region_header"
-                android:layout_width="wrap_content"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/Region"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recycler" />
+                app:layout_constraintTop_toBottomOf="@id/recycler"
+                android:id="@+id/items_recycler"
+                tools:listitem="@layout/details_list"
+                tools:itemCount="10"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/capital_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/capital"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/region_header" />
-
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/time_zone"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/currency"
-                tools:text="Time Zone" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/official_language_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/official_language"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/un_member" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/area"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/independence"
-                tools:text="Area" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/currency"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/area"
-                tools:text="Currency" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/motto_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/motto"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/capital_header" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/independence"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="24dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sub_region"
-                tools:text="Independent" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/un_member"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="24dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/time_zone"
-                tools:text="Un Member" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/sub_region"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/motto_header"
-                tools:text="Sub Region" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/landlocked"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/official_language_header"
-                tools:text="Landlocked" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/start_of_week"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/landlocked"
-                tools:text="Start of Week" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/latitude"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="24dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/start_of_week"
-                tools:text="Latitude" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/longitude"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/latitude"
-                tools:text="Longitude" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/google_maps"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:autoLink="web"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/longitude"
-                tools:text="Google Maps" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/open_street_map"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:autoLink="web"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/google_maps"
-                tools:text="Open Street Map" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/driving_side"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="24dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/open_street_map"
-                tools:text="Driving Side" />
 
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -268,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/arrow_background"
                 android:visibility="invisible"
+                android:layout_marginStart="20dp"
                 app:layout_constraintBottom_toBottomOf="@id/recycler"
                 app:layout_constraintStart_toStartOf="@id/recycler"
                 app:layout_constraintTop_toTopOf="@id/recycler"
@@ -278,6 +99,7 @@
                 android:id="@+id/next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/arrow_background"
                 app:layout_constraintBottom_toBottomOf="@id/recycler"
                 app:layout_constraintEnd_toEndOf="@id/recycler"

@@ -220,4 +220,35 @@
         <item>Vietnam</item>
 
     </string-array>
+
+    <string-array name="country_properties_titles">
+        <item>Official name</item>
+        <item>Common name</item>
+        <item>Alternate Spellings</item>
+        <item>Latitude and Longitude</item>
+        <item>Capital</item>
+        <item>Latitude and Longitude of Capital</item>
+        <item>Motto</item>
+        <item>Male Demonymn</item>
+        <item>Female Demonymn</item>
+        <item>Area</item>
+        <item>Timezones</item>
+        <item>Independent</item>
+        <item>Region</item>
+        <item>Sub-region</item>
+        <item>Continents</item>
+        <item>Population</item>
+        <item>Borders</item>
+        <item>Landlocked</item>
+        <item>IDD</item>
+        <item>TLD</item>
+        <item>Location (Google Maps)</item>
+        <item>Location (Open Street Maps)</item>
+        <item>UN Member</item>
+        <item>FIFA Demonymn</item>
+        <item>Start of Week</item>
+        <item>Driving side</item>
+        <item>Flag</item>
+
+    </string-array>
 </resources>

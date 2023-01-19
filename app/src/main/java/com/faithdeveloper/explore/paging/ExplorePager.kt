@@ -3,7 +3,6 @@ package com.faithdeveloper.explore.paging
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,19 +11,17 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.faithdeveloper.explore.util.ITEM_COMPARATOR
 import com.faithdeveloper.explore.databinding.CountriesListItemBinding
 import com.faithdeveloper.explore.models.Country
+import com.faithdeveloper.explore.util.ITEM_COMPARATOR
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.google.android.material.textview.MaterialTextView
 
 class ExplorePager(private val onClick: (country: Country) -> Unit) :
     PagingDataAdapter<Country, ExplorePager.ExploreViewHolder>(ITEM_COMPARATOR) {
 
-    inner class ExploreViewHolder(val binding: CountriesListItemBinding) :
+    inner class ExploreViewHolder(private val binding: CountriesListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        var mItem: Country? = null
+        private var mItem: Country? = null
 
         init {
             binding.item.setOnClickListener {
@@ -36,7 +33,7 @@ class ExplorePager(private val onClick: (country: Country) -> Unit) :
             mItem = item
             binding.country.text = item?.name?.official
             if (item?.capital?.isNotEmpty() == true) {
-                binding.capital.text = item?.capital?.first()
+                binding.capital.text = item.capital.first()
             }
             binding.flag.loadImage(item?.flags?.png)
         }

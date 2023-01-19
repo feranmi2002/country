@@ -15,10 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.faithdeveloper.explore.R
+import com.faithdeveloper.explore.adapters.CountryPropertiesAdapter
 import com.faithdeveloper.explore.adapters.ImagesAdapter
 import com.faithdeveloper.explore.databinding.DetailsScreenBinding
 import com.faithdeveloper.explore.models.Country
+import com.faithdeveloper.explore.util.Utils
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,13 +37,17 @@ class DetailsFragment : Fragment() {
     private lateinit var data: Country
     private lateinit var adapter: ImagesAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var propertiesAdapter: CountryPropertiesAdapter
+    private lateinit var propertiesLinearLayoutManager: LinearLayoutManager
     private val dateFormatter = SimpleDateFormat(
         "yyyy.MM.dd 'at' HH:mm:ss z",
         Locale.getDefault()
     )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         data = requireArguments().getParcelable("data")!!
         setUpAdapter()
+        setUpPropertiesAdapter()
         super.onCreate(savedInstanceState)
     }
 
@@ -53,52 +61,19 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.country.text = data.name.official
         linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.recycler.layoutManager = linearLayoutManager
         binding.recycler.adapter = adapter
-        presentData()
+
+        propertiesLinearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.itemsRecycler?.layoutManager = propertiesLinearLayoutManager
+        binding.itemsRecycler?.adapter = propertiesAdapter
         back()
         nextAndBack()
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    private fun presentData() {
-        binding.apply {
-            country.text = data.name.official
-            regionHeader.text = htmlFormat("Region", data.region)
-            capitalHeader.text = htmlFormat("Capital", formatListOfStrings(data.capital))
-            timeZone.text = htmlFormat("Time Zone(s)", formatListOfStrings(data.timezones))
-            officialLanguageHeader.text = htmlFormat("Language", data.languages.language)
-            area.text = htmlFormat("Area", data.area.toString())
-            currency.text = htmlFormat("Currency", data.currencies.shortName.name)
-            mottoHeader.text = htmlFormat("Motto", data.motto)
-            independence.text = htmlFormat("Independent", data.independent.toString())
-            unMember.text = htmlFormat("UN Member", data.unMember.toString())
-            subRegion.text = htmlFormat("Sub Region", data.subregion)
-            landlocked.text = htmlFormat("Landlocked", data.landlocked.toString())
-            startOfWeek.text = htmlFormat("Start Of The Week", data.startOfWeek)
-            latitude.text = htmlFormat("Latitude", data.latlng[0].toString())
-            longitude.text = htmlFormat("Longitude", data.latlng[1].toString())
-            googleMaps.text = htmlFormat("Google Map", data.maps.googleMaps)
-            openStreetMap.text = htmlFormat("Open Street Map", data.maps.openStreetMaps)
-            drivingSide.text = htmlFormat("Driving Side", data.car.side)
-        }
-
-    }
-
-    private fun htmlFormat(header: String, item: String) =
-        Html.fromHtml("<b>$header: </b> $item", Html.FROM_HTML_MODE_COMPACT)
-
-    private fun formatListOfStrings(timezones: List<String>): String {
-        var string = ""
-        var size = timezones.size
-        timezones.forEach {
-            string += it + if (size > 1) ", "
-            else ""
-            size -= 1
-        }
-        return string
     }
 
 
@@ -109,9 +84,17 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setUpAdapter() {
-        adapter = ImagesAdapter(listOf(data.flags.png, data.coatOfArms.png)){
+        adapter = ImagesAdapter(listOf(data.flags.png, data.coatOfArms.png)) {
             downloadImage(it, binding.country.text.toString())
         }
+    }
+
+    private fun setUpPropertiesAdapter() {
+        propertiesAdapter = CountryPropertiesAdapter(
+            Utils.formatCountryProperties(data),
+            resources.getStringArray(R.array.country_properties_titles)
+        )
+
     }
 
     private fun nextAndBack() {
@@ -131,7 +114,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun downloadImage(bitmap: Bitmap?, name:String) {
+    private fun downloadImage(bitmap: Bitmap?, name: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             val resolver = requireContext().applicationContext.contentResolver
             try {
@@ -161,7 +144,13 @@ class DetailsFragment : Fragment() {
                     }
                 } else {
                     val directory =
-                        requireContext().getExternalFilesDir("${Environment.DIRECTORY_PICTURES}/${resources.getString(R.string.app_name)}")
+                        requireContext().getExternalFilesDir(
+                            "${Environment.DIRECTORY_PICTURES}/${
+                                resources.getString(
+                                    R.string.app_name
+                                )
+                            }"
+                        )
                     if (!directory?.exists()!!) directory.mkdir()
                     val newImageDetails = ContentValues().apply {
                         put(

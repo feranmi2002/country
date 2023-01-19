@@ -6,11 +6,15 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Country(
     val name: Name,
+    val tld:List<String>,
     val region: String,
     val capital: List<String>,
     val motto: String,
     val languages: Language,
     val currencies: Currency,
+    val idd:Idd,
+    val borders:List<String>,
+    val altSpellings:List<String>,
     val area: Double,
     val independent: Boolean,
     val flags: Image,
@@ -22,17 +26,27 @@ data class Country(
     val landlocked:Boolean,
     val maps:Maps,
     val startOfWeek:String,
-    val car:Drive
+    val car:Drive,
+    val flag:String,
+    val demonyms:Demonymn,
+    val continents:List<String>,
+    val fifa:String,
+    val population:Long,
+    val capitalInfo:CapitalInfo
 
 
 ) : Parcelable {
     constructor() : this(
         Name(),
+        listOf(),
         "",
         listOf(),
         "",
         Language(),
         Currency(),
+        Idd(),
+        listOf(),
+        listOf(),
         Double.MIN_VALUE,
         true,
         Image(),
@@ -44,6 +58,12 @@ data class Country(
         false,
         Maps(),
         "",
-        Drive()
+        Drive(),
+        "",
+        Demonymn(),
+        listOf(),
+        "",
+        0,
+        CapitalInfo()
     )
 }

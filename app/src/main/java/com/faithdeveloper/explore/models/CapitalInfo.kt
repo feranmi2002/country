@@ -4,9 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Name(
-    val common:String,
-    val official:String
+data class CapitalInfo(
+    val latlng:List<Double>
 ):Parcelable{
-    constructor(): this("", "")
+    constructor():this(listOf())
 }

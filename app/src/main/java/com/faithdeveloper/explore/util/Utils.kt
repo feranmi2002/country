@@ -6,9 +6,8 @@ import android.view.inputmethod.InputMethodManager
 import com.faithdeveloper.explore.R
 import com.faithdeveloper.explore.models.Country
 
+
 object Utils {
-    const val PARENT = 0
-    const val CHILD = 1
     const val CONTINENT_QUERY_TYPE = "Continent"
     const val COUNTRY_QUERY_TYPE = "Country"
     const val LANGUAGE_QUERY_TYPE = "Language"
@@ -16,8 +15,37 @@ object Utils {
     const val CAPITAL_QUERY_TYPE = "Capital"
     const val DEMONYM_QUERY_TYPE = "Demonym"
     const val SUBCONTINENT_QUERY_TYPE = "Sub-Continent"
+    const val CAPITAL = "capital"
     const val ALL_COUNTRIES_QUERY_TYPE = "All countries"
-    const val SEPARATOR = "separator"
+    const val NAME_COMMON = "name_common"
+    const val NAME_OFFICIAL = "name_official"
+    const val TLD = "tld"
+    const val REGION = "region"
+    const val LANGUAGES = "languages"
+    const val MOTTO = "motto"
+    const val IDD = "idd"
+    const val BORDERS = "borders"
+    const val ALT_SPELLINGS = "altSpellings"
+    const val AREA = "area"
+    const val INDEPENDENT = "independent"
+    const val FLAGS = "flags"
+    const val TIMEZONES = "timezones"
+    const val COAT_OF_ARMS = "coatOfArms"
+    const val UN_MEMBER = "unMember"
+    const val SUBREGION = "subregion"
+    const val LATLNG = "latlng"
+    const val LANDLOCKED = "landlocked"
+    const val GOOGLE_MAPS = "google_maps"
+    const val OPEN_STREET_MAPS = "open_street_maps"
+    const val START_OF_WEEK = "start_of_week"
+    const val DRIVING_SIDE = "driving_side"
+    const val FLAG = "flag"
+    const val MALE_DEMONYMNS = "male_demonymns"
+    const val FEMALE_DEMONYMNS = "female_demonymns"
+    const val CONTINENTS = "continents"
+    const val FIFA = "fifa"
+    const val POPULATION = "population"
+    const val CAPITAL_INFO = "capital_info"
 
 
     fun emptyResultFeedback(context: Context, query_type: String) = when (query_type) {
@@ -33,7 +61,7 @@ object Utils {
         }
     }
 
-    fun infoResource(context: Context, query_type: String) = when(query_type){
+    fun infoResource(context: Context, query_type: String) = when (query_type) {
         CONTINENT_QUERY_TYPE -> context.resources.getString(R.string.continents_info)
         LANGUAGE_QUERY_TYPE -> context.resources.getString(R.string.language_info)
         CURRENCY_QUERY_TYPE -> context.resources.getString(R.string.currency_info)
@@ -46,7 +74,7 @@ object Utils {
         }
     }
 
-    fun hideKeyboard(rootView: View,context: Context) {
+    fun hideKeyboard(rootView: View, context: Context) {
         val inputMethodManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(
@@ -54,7 +82,8 @@ object Utils {
             InputMethodManager.RESULT_UNCHANGED_SHOWN
         )
     }
-    fun showKeyboard(rootView: View, context: Context){
+
+    fun showKeyboard(rootView: View, context: Context) {
         val inputMethodManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(rootView, InputMethodManager.RESULT_UNCHANGED_SHOWN)
@@ -66,4 +95,64 @@ object Utils {
             country1.name.official.compareTo(country2.name.official)
         }
     }
+
+    fun formatCountryProperties(country: Country): List<String> {
+        val map = mutableMapOf<String, String>(
+            NAME_OFFICIAL to country.name.official,
+            NAME_COMMON to country.name.common,
+            ALT_SPELLINGS to formatListOfStrings(country.altSpellings),
+            LATLNG to formatListOfStrings(country.latlng.map { it.toString() }),
+            CAPITAL to formatListOfStrings(country.capital),
+            CAPITAL_INFO to formatListOfStrings(country.capitalInfo.latlng.map { it.toString() }),
+            MOTTO to country.motto,
+            MALE_DEMONYMNS to country.demonyms.eng.m,
+            FEMALE_DEMONYMNS to country.demonyms.eng.f,
+            AREA to country.area.toString(),
+            TIMEZONES to formatListOfStrings(country.timezones),
+            INDEPENDENT to country.independent.toString().capitalizer(),
+            REGION to country.region,
+            SUBREGION to country.subregion,
+            CONTINENTS to formatListOfStrings(country.continents),
+            POPULATION to country.population.toString(),
+            BORDERS to formatListOfStrings(country.borders),
+            LANDLOCKED to country.landlocked.toString().capitalizer(),
+            IDD to formatListOfStrings(formatIdd(country.idd.root, country.idd.suffixes)),
+            TLD to formatListOfStrings(country.tld),
+            GOOGLE_MAPS to country.maps.googleMaps,
+            OPEN_STREET_MAPS to country.maps.openStreetMaps,
+            UN_MEMBER to country.unMember.toString().capitalizer(),
+            FIFA to country.fifa,
+            START_OF_WEEK to country.startOfWeek.capitalizer(),
+            DRIVING_SIDE to country.car.side.capitalizer(),
+            FLAG to country.flag,
+            LANGUAGES to country.languages.language,
+            FLAGS to country.flags.png,
+            COAT_OF_ARMS to country.coatOfArms.png
+//            "currencies" to country.currencies.shortName.name
+        )
+        return  map.map {
+            it.value
+        }
+
+    }
+
+    private fun formatIdd(idd: String, suffixes: List<String>) = suffixes.map { suffix ->
+        idd + suffix
+
+    }
+
+    private fun formatListOfStrings(list: List<String>): String {
+        var string = ""
+        var size = list.size
+        list.forEach {
+            string += it + if (size > 1) ", "
+            else ""
+            size -= 1
+        }
+        return string
+    }
+
+    fun String.capitalizer() = this.capitalize()
+
+
 }
