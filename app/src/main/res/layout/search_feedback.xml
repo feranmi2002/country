@@ -23,26 +23,49 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/an_error_occurred"
-        android:textColor="@color/design_default_color_error"
+
         android:visibility="invisible"
         tools:visibility="visible"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/button_retry"
+        app:layout_constraintTop_toBottomOf="@id/image_feedback_empty"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="8dp" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/empty_result"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="@string/no_result_found"
         android:visibility="invisible"
         tools:visibility="visible"
         android:textSize="18sp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_retry"/>
+        app:layout_constraintTop_toBottomOf="@id/image_feedback_empty"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/image_feedback_empty"
+        app:srcCompat="@drawable/empty_result"
+        android:visibility="invisible"
+        tools:visibility="visible"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/image_feedback_connection_error"
+        app:srcCompat="@drawable/connection_error"
+        android:visibility="invisible"
+        tools:visibility="visible"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_retry"
@@ -53,7 +76,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/error"
         tools:visibility="visible" />
 
 

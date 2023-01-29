@@ -14,7 +14,7 @@
     <string name="ethnic_group">Ethnic Group</string>
     <string name="choose_filters">You haven\'t chosen any Filters.</string>
     <string name="retry">RETRY</string>
-    <string name="an_error_occurred">An error occurred</string>
+    <string name="an_error_occurred">Couldn\'t connect, check your Internet connection</string>
     <string name="empty_search_keyword">Enter search text</string>
     <string name="no_result_found">No results Found</string>
     <string name="cancel">Cancel</string>
