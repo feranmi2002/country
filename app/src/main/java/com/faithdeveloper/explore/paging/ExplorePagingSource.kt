@@ -16,6 +16,7 @@ import com.faithdeveloper.explore.util.Utils.SUBCONTINENT_QUERY_TYPE
 import com.faithdeveloper.explore.util.ViewModel_PagingSource_Interface
 import java.util.*
 
+
 class ExplorePagingSource(
     private val apiHelper: ApiHelper,
     private val query: String?,
@@ -23,6 +24,10 @@ class ExplorePagingSource(
     private val viewModelPagingSourceInterface: ViewModel_PagingSource_Interface
 ) :
     PagingSource<Int, Country>() {
+
+    private val pageLimiter = 9
+    private val pageSize = 10
+
     private var response: List<Country> = listOf()
 
 
@@ -30,7 +35,7 @@ class ExplorePagingSource(
         return try {
             try {
                 if (response.isEmpty()) {
-                    if (params.key == 1) {
+                    if (params.key == 0) {
                         response = when (queryType) {
                             COUNTRY_QUERY_TYPE -> Utils.sortAlphabetically(
                                 Repository.getByName(
@@ -82,12 +87,14 @@ class ExplorePagingSource(
             } catch (e: retrofit2.HttpException) {
                 if (e.code() != 404) throw e
             } finally {
+                viewModelPagingSourceInterface.setPagerExternallyMadeEmpty(false)
                 viewModelPagingSourceInterface.getResponseSize(response.size)
             }
-            val result = if (params.key == 1) {
+
+            val result = if (params.key == 0) {
                 when {
-                    response.size >= 9 -> {
-                        response.slice(IntRange(0, 9))
+                    response.size > pageLimiter -> {
+                        response.slice(IntRange(0, pageLimiter))
                     }
                     else -> {
                         val list = mutableListOf<Country>()
@@ -95,14 +102,18 @@ class ExplorePagingSource(
                         list.toList()
                     }
                 }
-            } else response.slice(
-                IntRange(
-                    params.key!!.times(10),
-                    (params.key!! * 10) + 9
+            } else {
+                val start = (params.key!!).times(pageSize)
+                response.slice(
+                    IntRange(
+                        start,
+                        start + if (response.size.minus(start) > pageLimiter) pageLimiter
+                        else response.size.minus(start)
+                    )
                 )
-            )
+            }
             val currentKey = params.key
-            val nextKey = if (result.size < 10) {
+            val nextKey = if (result.size < pageSize) {
                 null
             } else if (params.key != null) {
                 currentKey?.plus(1)

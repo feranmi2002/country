@@ -17,23 +17,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/error"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/an_error_occurred"
-
-        android:visibility="invisible"
-        tools:visibility="visible"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/image_feedback_empty"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="8dp" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/empty_result"
+        android:id="@+id/text_feedback"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="@string/no_result_found"
@@ -43,7 +29,7 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_feedback_empty"/>
+        app:layout_constraintTop_toBottomOf="@id/image_feedback"/>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="0dp"
@@ -51,19 +37,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/image_feedback_empty"
+        android:id="@+id/image_feedback"
         app:srcCompat="@drawable/empty_result"
-        android:visibility="invisible"
-        tools:visibility="visible"/>
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/image_feedback_connection_error"
-        app:srcCompat="@drawable/connection_error"
         android:visibility="invisible"
         tools:visibility="visible"/>
 
@@ -72,11 +47,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/retry"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/error"
+        app:layout_constraintTop_toBottomOf="@id/text_feedback"
         tools:visibility="visible" />
 
 

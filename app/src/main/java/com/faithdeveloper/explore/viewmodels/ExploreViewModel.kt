@@ -20,6 +20,10 @@ class ExploreViewModel(private val apiHelper: ApiHelper) : ViewModel(), ViewMode
             .cachedIn(viewModelScope)
     }
     val result get() = _result
+    private var _pagerExternallyMadeEmpty = false
+    val pagerExternallyMadeEmpty get() = _pagerExternallyMadeEmpty
+    private var _pagerEmptyBecauseOfStartup = true
+    val pagerEmptyBecauseOfStartup get() = _pagerEmptyBecauseOfStartup
     private var _responseSize = 0
     val responseSize get() = _responseSize
 
@@ -27,11 +31,20 @@ class ExploreViewModel(private val apiHelper: ApiHelper) : ViewModel(), ViewMode
     private fun request(query: String?, queryType: String) = Pager(
         config = PagingConfig(pageSize = 10), pagingSourceFactory = {
             ExplorePagingSource(apiHelper, query, queryType,this)
-        }, initialKey = 1
+        }, initialKey = 0
     )
 
     override fun getResponseSize(responseSize: Int) {
         this._responseSize = responseSize
+    }
+
+    override fun setPagerExternallyMadeEmpty(boolean: Boolean) {
+        _pagerExternallyMadeEmpty = boolean
+    }
+
+
+    fun setPagerEmptyBecauseOfStartup(){
+        _pagerEmptyBecauseOfStartup = false
     }
 
     @Suppress("UNCHECKED_CAST")

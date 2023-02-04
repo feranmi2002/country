@@ -41,12 +41,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.intro_screen.*
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.properties.Delegates
 
 class MainFragment : Fragment(), FilterInterface {
     private var _binding: IntroScreenBinding? = null
     private val binding get() = _binding!!
     private lateinit var pagerAdapter: ExplorePager
-    private var pagerAdapterExternallyMadeEmpty = false
     private val viewModel: ExploreViewModel by viewModels {
         ExploreViewModel.factory(
             ApiHelper(
@@ -86,7 +86,7 @@ class MainFragment : Fragment(), FilterInterface {
         val chipData = resources.getTextArray(R.array.chips)
         binding.chipGroup.apply {
             setOnCheckedStateChangeListener { group, checkedIds ->
-                if(checkedIds.size > 0) {
+                if (checkedIds.size > 0) {
                     val chip: Chip? = group.findViewById(checkedIds[0])
                     viewModel.queryTypeCache = chip?.text as String
                     //               binding.searchCountry.setSimpleItems(autoCompleteResources[chip.text as String]!!)
@@ -148,7 +148,8 @@ class MainFragment : Fragment(), FilterInterface {
 
     private fun request() {
         Utils.hideKeyboard(binding.root, requireContext())
-        pagerAdapterExternallyMadeEmpty = true
+        viewModel.setPagerEmptyBecauseOfStartup()
+        viewModel.setPagerExternallyMadeEmpty(true)
         pagerAdapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
         viewModel.query.value = binding.searchCountry.text.toString().trim()
     }
@@ -227,56 +228,69 @@ class MainFragment : Fragment(), FilterInterface {
     private fun setUpLoadState() {
         lifecycleScope.launch {
             pagerAdapter.loadStateFlow.collect { loadState ->
-                // show empty list
-                if (loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached && pagerAdapter.itemCount < 1) {
-                    recycler.isVisible = false
 
-//                    empty list caused by new search
-                    if (!pagerAdapterExternallyMadeEmpty) {
-                        binding.feedBack.emptyResult.isVisible = true
+//                set feedback image and text
+                if (pagerAdapter.itemCount < 1) {
 
-                    }
+                    binding.feedBack.imageFeedback.setImageResource(
+                        when (loadState.refresh) {
+                            is LoadState.Error -> R.drawable.connection_error
+                            else -> R.drawable.empty_result
+                        }
+                    )
+
+                    binding.feedBack.textFeedback.text =
+                        when (loadState.refresh) {
+                            is LoadState.Error -> resources.getString(R.string.an_error_occurred)
+                            is LoadState.NotLoading -> Utils.emptyResultFeedback(
+                                requireContext(),
+                                viewModel.queryType
+                            ).format(
+                                Locale.getDefault(), viewModel.query.value
+                            )
+                            else -> ""
+                        }
                 }
-//                empty list caused by empty result
-                else {
-                    binding.feedBack.emptyResult.text =
-                        Utils.emptyResultFeedback(requireContext(), viewModel.queryType).format(
-                            Locale.getDefault(), viewModel.query.value)
-                    binding.feedBack.emptyResult.isVisible = false
-                    pagerAdapterExternallyMadeEmpty = false
+
+
+//                feedback visibility
+                (
+                        (loadState.source.refresh is LoadState.NotLoading &&
+                        pagerAdapter.itemCount < 1
+                        && !viewModel.pagerExternallyMadeEmpty
+                        && !viewModel.pagerEmptyBecauseOfStartup
+                        ) ||
+                                (loadState.refresh is LoadState.Error && pagerAdapter.itemCount < 1)
+                        ).apply {
+
+                    binding.feedBack.textFeedback.isVisible = this
+                    binding.feedBack.imageFeedback.isVisible = this
                 }
-//                hide recycler on error or on loading
-                binding.recycler.isVisible =
-                    !(loadState.refresh is LoadState.Loading || loadState.refresh is LoadState.Error)
 
-//                hide info on error or on loading
-                binding.info.isVisible =
-                    !(loadState.refresh is LoadState.Loading || loadState.refresh is LoadState.Error)
-
-                //show loading spinner during initial load or refresh
-                binding.feedBack.progressCircular.isVisible =
-                    loadState.refresh is LoadState.Loading
-
-
-                enableOrDisableTouchableViewsBasedOnLoadState(loadState.refresh is LoadState.Loading)
-
-                // show error info
-                binding.feedBack.error.isVisible =
-                    loadState.refresh is LoadState.Error && pagerAdapter.itemCount == 0
                 binding.feedBack.buttonRetry.isVisible =
-                    loadState.refresh is LoadState.Error && pagerAdapter.itemCount == 0
+                    loadState.refresh is LoadState.Error && pagerAdapter.itemCount < 1
 
-//                show recycler on data loaded
+
+//               recycler and info visibility
                 binding.info.isVisible =
                     loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount > 0
                 binding.recycler.isVisible =
                     loadState.refresh is LoadState.NotLoading && pagerAdapter.itemCount > 0
+
+//                set info based on query
                 binding.info.text =
                     Utils.infoResource(requireContext(), viewModel.queryType).format(
-                        Locale.getDefault(),
+                        Locale.ENGLISH,
                         viewModel.query.value,
                         viewModel.responseSize
                     )
+
+
+                //show loading spinner and manage views during initial load or refresh
+                (loadState.refresh is LoadState.Loading).apply {
+                    binding.feedBack.progressCircular.isVisible = this
+                    enableOrDisableTouchableViewsBasedOnLoadState(this)
+                }
             }
         }
     }
