@@ -1,162 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000F24"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000F24">
+        android:layout_height="0dp"
+        android:background="#000F24"
+        android:fitsSystemWindows="true"
+        app:layout_constraintBottom_toTopOf="@id/ad_view"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_tool_bar"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentScrim="#000F24"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap|enterAlways">
+            android:background="#000F24">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentScrim="#000F24"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap|enterAlways">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#000F24">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/app_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24.98dp"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/app_name"
+                        android:textColor="#EAECF0"
+                        android:textSize="30sp"
+                        app:fontFamily="@font/pacifico"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/logo_dot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        app:layout_constraintBottom_toBottomOf="@id/app_logo"
+                        app:layout_constraintStart_toEndOf="@id/app_logo"
+                        app:srcCompat="@drawable/dot" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/light_dark_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:background="?attr/selectableItemBackground"
+                        app:layout_constraintBottom_toBottomOf="@id/app_logo"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/app_logo"
+                        app:srcCompat="@drawable/ic_moon" />
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/search_country"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="12.04dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/search_country_background"
+                        android:drawableStart="@drawable/ic_baseline_search_24"
+                        android:fontFamily="@font/axiforma_thin"
+                        android:gravity="center"
+                        android:hint="@string/search_country"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:textColor="#EAECF0"
+                        android:textColorHint="#EAECF0"
+                        android:textSize="16sp"
+                        app:layout_constraintTop_toBottomOf="@id/app_logo" />
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontal_scroll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="2dp"
+                        android:scrollbars="none"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/search_country">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chip_group"
+                            style="@style/Widget.MaterialComponents.ChipGroup"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:chipSpacing="4dp"
+                            app:selectionRequired="false"
+                            app:singleLine="true"
+                            app:singleSelection="true" />
+                    </HorizontalScrollView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#000F24">
+                android:nestedScrollingEnabled="true">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/app_logo"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/info"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24.98dp"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/app_name"
-                    android:textColor="#EAECF0"
-                    android:textSize="30sp"
-                    app:fontFamily="@font/pacifico"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/logo_dot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    app:layout_constraintBottom_toBottomOf="@id/app_logo"
-                    app:layout_constraintStart_toEndOf="@id/app_logo"
-                    app:srcCompat="@drawable/dot" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/light_dark_mode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:background="?attr/selectableItemBackground"
-                    app:layout_constraintBottom_toBottomOf="@id/language_chooser"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/language_chooser"
-                    app:srcCompat="@drawable/ic_moon" />
-
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/search_country"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="12.04dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="@drawable/search_country_background"
-                    android:drawableStart="@drawable/ic_baseline_search_24"
-                    android:fontFamily="@font/axiforma_thin"
-                    android:gravity="center"
-                    android:hint="@string/search_country"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:textColor="#EAECF0"
-                    android:textColorHint="#EAECF0"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toBottomOf="@id/app_logo" />
-
-                <HorizontalScrollView
-                    android:id="@+id/horizontal_scroll"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="2dp"
-                    android:scrollbars="none"
+                    android:layout_marginStart="12sp"
+                    android:paddingBottom="4dp"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    app:fontFamily="@font/axiforma_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/search_country">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="List of countries in Africa - 56 results"
+                    tools:visibility="visible" />
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chip_group"
-                        style="@style/Widget.MaterialComponents.ChipGroup"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:chipSpacing="4dp"
-                        app:selectionRequired="false"
-                        app:singleLine="true"
-                        app:singleSelection="true" />
-                </HorizontalScrollView>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/language_chooser"
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/language_chooser_background"
-                    android:elevation="2dp"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:text="@string/en"
-                    android:textColor="#D0D5DD"
-                    android:textSize="12sp"
-                    android:theme="@style/Theme.Explore.Ripple"
-                    app:layout_constraintBottom_toBottomOf="@id/app_logo"
-                    app:layout_constraintEnd_toStartOf="@id/light_dark_mode"
-                    app:layout_constraintTop_toTopOf="@id/app_logo" />
+                    app:layout_constraintTop_toBottomOf="@id/info"
+                    tools:listitem="@layout/countries_list_item" />
+
+                <include
+                    android:id="@+id/feedBack"
+                    layout="@layout/search_feedback" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:nestedScrollingEnabled="true">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/info"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12sp"
-                android:paddingBottom="4dp"
-                android:textSize="15sp"
-                android:visibility="gone"
-                app:fontFamily="@font/axiforma_medium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="List of countries in Africa - 56 results"
-                tools:visibility="visible" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/info"
-                tools:listitem="@layout/countries_list_item" />
-
-            <include
-                android:id="@+id/feedBack"
-                layout="@layout/search_feedback" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/ad_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-5686809006229698/3850749515"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

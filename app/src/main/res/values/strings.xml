@@ -29,7 +29,7 @@
     <string name="demonymn_info">Here are countries that have demonymn that contains \'%1s \' - %1d result(s)</string>
     <string name="subcontinent_info">Here are countries in subcontinents that contains \'%1s \' -%1d result(s)</string>
     <string name="continents_empty">There is no continent called \'%1s \'</string>
-    <string name="language_empty">We couldn\'t find a country that speaks \'%1s \'</string>
+    <string name="language_empty">We couldn\'t find a country that speaks \'%1s \' as an official language</string>
     <string name="currency_empty">We couldn\'t find a country that spends \'%1s \'</string>
     <string name="countries_empty">There is no country called \'%1s \'</string>
     <string name="capital_empty">There is no country with the capital \'%1s \'</string>
@@ -37,6 +37,13 @@
     <string name="subcontinent_empty">There is no subcontinent called \'%1s \'</string>
     <string name="all_countries_info" />
     <string name="all_countries_empty" />
+    <string name="country_hint">Enter a country</string>
+    <string name="continent_hint">Enter a continent</string>
+    <string name="sub_continent_hint">Enter a sub-continent</string>
+    <string name="currency_hint">Enter a currency</string>
+    <string name="language_hint">Enter a language</string>
+    <string name="capital_hint">Enter a capital</string>
+    <string name="demonymn_hint">Enter a demonymn</string>
 
 
 </resources>

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fitsSystemWindows="true"
+        app:layout_constraintBottom_toTopOf="@id/ad_view"
+        app:layout_constraintTop_toTopOf="parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -51,9 +58,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:background="?attr/selectableItemBackground"
-                    app:layout_constraintBottom_toBottomOf="@id/language_chooser"
+                    app:layout_constraintBottom_toBottomOf="@id/app_logo"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/language_chooser"
+                    app:layout_constraintTop_toTopOf="@id/app_logo"
                     app:srcCompat="@drawable/ic_sun_8726" />
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -100,22 +107,20 @@
                 </HorizontalScrollView>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/language_chooser"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/info"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/language_chooser_background"
-                    android:elevation="2dp"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:imeOptions="actionSearch"
-                    android:text="@string/en"
-                    android:textColor="#000000"
-                    android:textSize="12sp"
-                    android:theme="@style/Theme.Explore.Ripple"
-                    app:layout_constraintBottom_toBottomOf="@id/app_logo"
-                    app:layout_constraintEnd_toStartOf="@id/light_dark_mode"
-                    app:layout_constraintTop_toTopOf="@id/app_logo" />
+                    android:layout_marginStart="12sp"
+                    android:paddingBottom="4dp"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    app:fontFamily="@font/axiforma_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/horizontal_scroll"
+                    tools:text="List of countries in Africa - 56 results"
+                    tools:visibility="visible" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -131,26 +136,11 @@
             android:layout_height="match_parent"
             android:nestedScrollingEnabled="true">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/info"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12sp"
-                android:paddingBottom="4dp"
-                android:textSize="15sp"
-                android:visibility="gone"
-                app:fontFamily="@font/axiforma_medium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="List of countries in Africa - 56 results"
-                tools:visibility="visible" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/info"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/countries_list_item" />
 
             <include
@@ -158,5 +148,14 @@
                 layout="@layout/search_feedback" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/ad_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-5686809006229698/3850749515"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
